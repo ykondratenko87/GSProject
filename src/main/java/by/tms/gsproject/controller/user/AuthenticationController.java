@@ -16,7 +16,7 @@ public class AuthenticationController {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            req.getRequestDispatcher("/jsp/error.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req,resp);
         }
         UserRequest userRequest = new UserRequest();
         userRequest.setLogin(login);
@@ -24,7 +24,7 @@ public class AuthenticationController {
         UserService userService = new UserService();
         User authenticate = userService.authenticate(userRequest);
         if (authenticate == null) {
-            req.getRequestDispatcher("/jsp/registration.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/auth/registration.jsp").forward(req,resp);
         }
         HttpSession session = req.getSession(true);
         session.setAttribute("authenticatedUser", authenticate);

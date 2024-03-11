@@ -23,7 +23,7 @@ public class UserService implements UserServiceInterface {
         Collection<User> allUsers = userRepository.allUsers();
         boolean userExists = allUsers.stream().anyMatch(u -> u.getLogin().equals(user.getLogin()));
         if (userExists) {
-            throw new IllegalArgumentException("Пользователь с таким логином уже существует");
+            throw new IllegalArgumentException("Пользователь уже существует");
         }
         userRepository.add(user);
     }

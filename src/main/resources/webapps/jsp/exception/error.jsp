@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta content="text/html">
     <title>Error Page</title>
-    <link rel="stylesheet" href="css/html.css">
+    <link rel="stylesheet" href="../../css/html.css">
 </head>
 <body>
 <div class="registration-cssave">
