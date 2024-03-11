@@ -15,7 +15,7 @@ public class AuthenticationController {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            resp.sendRedirect("jsp/error.jsp");
+            resp.sendRedirect("/GSProject/jsp/error.jsp");
             return;
         }
         UserRequest userRequest = new UserRequest();
@@ -24,15 +24,15 @@ public class AuthenticationController {
         UserService userService = new UserService();
         User authenticate = userService.authenticate(userRequest);
         if (authenticate == null) {
-            resp.sendRedirect("jsp/error.jsp");
+            resp.sendRedirect("/GSProject/jsp/error.jsp");
             return;
         }
         HttpSession session = req.getSession(true);
         session.setAttribute("authenticatedUser", authenticate);
         if (authenticate.getRole().equals(Role.ADMIN)) {
-            resp.sendRedirect("/GSProject/jsp/admin.jsp");
+            resp.sendRedirect("/GSProject/jsp/admin/admin.jsp");
         } else {
-            resp.sendRedirect("/GSProject/jsp/client.jsp");
+            resp.sendRedirect("/GSProject/jsp/client/client.jsp");
         }
     }
 }
