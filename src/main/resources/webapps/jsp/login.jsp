@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta content="text/html">
     <title>Форма входа</title>
-    <link rel="stylesheet" href="../css/html.css">
+    <link rel="stylesheet" href="css/html.css">
 </head>
 <body>
 <div class="registration-cssave">
@@ -29,11 +29,10 @@
                        required>
             </label>
         </div>
-
         <div class="form-group">
             <button class="btn btn-primary btn-block create-account" type="Submit">Log in</button>
         </div>
-        <p>Don't have an account? <a href="../jsp/registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
+        <p>Don't have an account? <a href="jsp/registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
     </form>
 </div>
 </body>

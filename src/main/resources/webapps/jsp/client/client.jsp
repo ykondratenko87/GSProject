@@ -8,14 +8,13 @@
     <meta charset="utf-8">
     <meta content="text/html">
     <title>Welcome </title>
-    <link rel="stylesheet" href="../../css/html.css">
+    <link rel="stylesheet" href="css/html.css">
 </head>
 <body>
 <div class="registration-cssave">
     <form method="post" action="http://localhost:8080/GSProject/login">
         <h3 class="text-center">Client</h3>
         <p class="text-white-50 mb-5">Please select one of the option!</p>
-
     </form>
 </div>
 </body>
