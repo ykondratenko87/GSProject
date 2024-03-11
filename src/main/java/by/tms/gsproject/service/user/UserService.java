@@ -39,7 +39,7 @@ public class UserService implements UserServiceInterface {
             }
         }
         if (authenticatedUser == null) {
-            throw new IllegalArgumentException("Пользователь с таким логином и паролем не найден");
+           return authenticatedUser=null;
         }
         return authenticatedUser;
     }

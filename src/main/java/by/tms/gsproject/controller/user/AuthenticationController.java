@@ -24,7 +24,7 @@ public class AuthenticationController {
         UserService userService = new UserService();
         User authenticate = userService.authenticate(userRequest);
         if (authenticate == null) {
-            resp.sendRedirect("/GSProject/jsp/error.jsp");
+            resp.sendRedirect("/GSProject/jsp/registration.jsp");
             return;
         }
         HttpSession session = req.getSession(true);
