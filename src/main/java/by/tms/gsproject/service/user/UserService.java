@@ -38,9 +38,6 @@ public class UserService implements UserServiceInterface {
                 break;
             }
         }
-        if (authenticatedUser == null) {
-           return authenticatedUser=null;
-        }
         return authenticatedUser;
     }
 

@@ -8,7 +8,8 @@ public interface UserRepository {
     User add(User user);
 
     void deleteById(Long userId);
-    User update (User user);
+
+    User update(User user);
 
     Collection<User> allUsers();
 

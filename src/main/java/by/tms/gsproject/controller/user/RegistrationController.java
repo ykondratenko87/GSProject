@@ -2,7 +2,6 @@ package by.tms.gsproject.controller.user;
 
 import by.tms.gsproject.api.user.UserRequest;
 import by.tms.gsproject.service.user.UserService;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ public class RegistrationController {
         String surname = req.getParameter("surname");
         String password = req.getParameter("password");
         if (login.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty()) {
-            resp.sendRedirect("jsp/error.jsp");
+            req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
         }
         UserRequest userRequest = new UserRequest();
         UserService userService = new UserService();
@@ -27,9 +26,9 @@ public class RegistrationController {
         userRequest.setPassword(password);
         try {
             userService.register(userRequest);
-            resp.sendRedirect("jsp/login.jsp");
+            req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
         } catch (IllegalArgumentException e) {
-            resp.sendRedirect("jsp/error.jsp");
-           }
+            req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
+        }
     }
 }

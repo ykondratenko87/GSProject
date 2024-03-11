@@ -12,7 +12,7 @@
         Welcome to GSProject
     </description>
     <welcome-file-list>
-        <welcome-file>/jsp/welcome.jsp</welcome-file>
+        <welcome-file>/jsp/login.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet>
@@ -23,11 +23,6 @@
     <servlet-mapping>
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.css</url-pattern>
     </servlet-mapping>
 
     </web-app>
