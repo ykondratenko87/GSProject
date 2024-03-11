@@ -30,7 +30,8 @@ public class Filter implements jakarta.servlet.Filter {
         }
 
         if (userRole == UserRole.Role.CLIENT && path.startsWith("/jsp/admin/")) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/exception/error.jsp");
+            request.setAttribute("error", "У вас недостаточно прав!");
+            request.getRequestDispatcher("/jsp/exception/error.jsp").forward(request, response);
             return;
         }
         httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/exception/error.jsp");
