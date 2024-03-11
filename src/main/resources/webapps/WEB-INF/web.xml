@@ -12,7 +12,7 @@
         Welcome to GSProject
     </description>
     <welcome-file-list>
-        <welcome-file>/jsp/login.jsp</welcome-file>
+        <welcome-file>/jsp/auth/welcome.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet>
@@ -25,4 +25,14 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    </web-app>
+    <filter>
+        <filter-name>Filter</filter-name>
+        <filter-class>by.tms.gsproject.filter.Filter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>

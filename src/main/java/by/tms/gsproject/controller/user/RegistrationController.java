@@ -16,7 +16,7 @@ public class RegistrationController {
         String surname = req.getParameter("surname");
         String password = req.getParameter("password");
         if (login.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty()) {
-            req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
         }
         UserRequest userRequest = new UserRequest();
         UserService userService = new UserService();
@@ -26,9 +26,9 @@ public class RegistrationController {
         userRequest.setPassword(password);
         try {
             userService.register(userRequest);
-            req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/jsp/client/client.jsp").forward(req, resp);
         } catch (IllegalArgumentException e) {
-            req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
+            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
         }
     }
 }

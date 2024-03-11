@@ -7,25 +7,14 @@
 <head>
     <meta charset="utf-8">
     <meta content="text/html">
-    <title>Форма регистрации</title>
-    <link rel="stylesheet" href="../css/html.css">
+    <title>Форма входа</title>
+    <link rel="stylesheet" href="../../css/html.css">
 </head>
 <body>
 <div class="registration-cssave">
-    <form method="post" action="http://localhost:8080/GSProject/registration">
-        <h3 class="text-center">Registration</h3>
-        <div class="form-group">
-            <label>
-                <span>Name</span>
-                <input class="form-control item" type="text" name="name" placeholder="Name" required>
-            </label>
-        </div>
-        <div class="form-group">
-            <label>
-                <span>Surname</span>
-                <input class="form-control item" type="text" name="surname" placeholder="Surname" required>
-            </label>
-        </div>
+    <form method="post" action="http://localhost:8080/GSProject/login">
+        <h3 class="text-center">Login</h3>
+        <p class="text-white-50 mb-5">Please enter your login and password!</p>
         <div class="form-group">
             <label>
                 <span>Login</span>
@@ -41,9 +30,9 @@
             </label>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary btn-block create-account" type="Submit">Sign up</button>
+            <button class="btn btn-primary btn-block create-account" type="Submit">Log in</button>
         </div>
-        <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+        <p>Don't have an account? <a href="jsp/auth/registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
     </form>
 </div>
 </body>
