@@ -59,7 +59,6 @@ public class UserFileRepository implements UserRepository {
                 .findFirst()
                 .orElse(null);
     }
-
     private long getLastId() {
         Collection<User> users = allUsers();
         return users.stream().mapToLong(User::getId).max().orElse(0);
