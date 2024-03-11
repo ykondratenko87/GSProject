@@ -8,16 +8,14 @@
     <meta charset="utf-8">
     <meta content="text/html">
     <title>Welcome </title>
-    <link rel="stylesheet" href="../css/html.css">
+    <link rel="stylesheet" href="../../css/html.css">
 </head>
 <body>
 <div class="registration-cssave">
     <form method="post" action="http://localhost:8080/GSProject/login">
-        <h3 class="text-center">Admin</h3>
+        <h3 class="text-center">Client</h3>
         <p class="text-white-50 mb-5">Please select one of the option!</p>
 
-        <p>Have an account? <a href="../GSProject/jsp/login.jsp" class="text-white-50 fw-bold">Log in</a>.</p>
-        <p>Don't have an account? <a href="../GSProject/jsp/registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
     </form>
 </div>
 </body>
