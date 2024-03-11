@@ -1,5 +1,6 @@
 package by.tms.gsproject.controller;
 
+import by.tms.gsproject.controller.user.AuthenticationController;
 import by.tms.gsproject.controller.user.RegistrationController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +16,10 @@ public class DispatcherServlet extends HttpServlet {
         if ("/registration".equals(path)) {
             RegistrationController registrationController = new RegistrationController();
             registrationController.registration(request, response);
+        }
+        if ("/login".equals(path)) {
+            AuthenticationController authenticationController = new AuthenticationController();
+            authenticationController.authentication(request, response);
         }
     }
 }

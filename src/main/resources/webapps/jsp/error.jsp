@@ -12,11 +12,14 @@
 </head>
 <body>
 <div class="registration-cssave">
-    <h3 class="text-center">Error</h3>
-    <div class="error-message">
-        <p>Sorry, something went wrong.</p>
-        <p>Please try again later.</p>
-    </div>
+    <form method="post" action="http://localhost:8080/GSProject/error">
+        <h3 class="text-center">Error</h3>
+        <div class="error-message">
+            <p>Sorry, something went wrong.</p>
+            <p>Please try again later.</p>
+        </div>
+    </form>
+    >
 </div>
 </body>
 </html>

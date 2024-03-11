@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="registration-cssave">
-    <form method="post" action="http://localhost:8080/GSProject/jsp/error.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/login">
         <h3 class="text-center">Login</h3>
         <p class="text-white-50 mb-5">Please enter your login and password!</p>
         <div class="form-group">

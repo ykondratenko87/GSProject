@@ -1,6 +1,6 @@
 package by.tms.gsproject.api.user;
 
-import by.tms.gsproject.entity.user.UserRole;
+import by.tms.gsproject.entity.user.UserRole.Role;
 import lombok.Data;
 
 @Data
@@ -10,7 +10,7 @@ public class UserResponse {
     private String surname;
     private String login;
     private String password;
-    private UserRole.Role role;
+    private Role role;
 
     @Override
     public String toString() {
