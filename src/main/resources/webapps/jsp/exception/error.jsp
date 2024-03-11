@@ -8,9 +8,47 @@
     <meta charset="utf-8">
     <meta content="text/html">
     <title>Error Page</title>
-    <link rel="stylesheet" href="../../css/html.css">
+    <style>
+        html {
+            background-color: #214c84;
+            background-blend-mode: overlay;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100%;
+        }
+
+        body {
+            background-color: transparent;
+        }
+
+        .registration-cssave {
+            padding: 50px 0;
+        }
+
+        .registration-cssave form {
+            max-width: 800px;
+            padding: 50px 70px;
+            border-radius: 10px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .registration-cssave form h3 {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .error-message {
+            margin-top: 20px;
+            color: red;
+        }
+    </style>
 </head>
 <body>
+<h2 class="eror">${error}</h2>
 <div class="registration-cssave">
     <form method="post" action="http://localhost:8080/GSProject/error">
         <h3 class="text-center">Error</h3>
