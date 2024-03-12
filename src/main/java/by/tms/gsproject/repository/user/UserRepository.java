@@ -1,4 +1,4 @@
-package by.tms.gsproject.repository;
+package by.tms.gsproject.repository.user;
 
 import by.tms.gsproject.entity.user.User;
 

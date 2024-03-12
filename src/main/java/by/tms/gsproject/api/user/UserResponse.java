@@ -11,16 +11,4 @@ public class UserResponse {
     private String login;
     private String password;
     private Role role;
-
-    @Override
-    public String toString() {
-        return "UserResponse{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }

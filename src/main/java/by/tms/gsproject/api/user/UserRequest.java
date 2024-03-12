@@ -11,16 +11,4 @@ public class UserRequest {
     private String login;
     private String password;
     private Role role;
-
-    @Override
-    public String toString() {
-        return "UserRequest{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }
