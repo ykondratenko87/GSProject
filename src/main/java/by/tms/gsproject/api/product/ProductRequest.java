@@ -1,6 +1,5 @@
 package by.tms.gsproject.api.product;
 
-import by.tms.gsproject.entity.product.Product;
 import lombok.Data;
 
 @Data

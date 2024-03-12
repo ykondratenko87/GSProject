@@ -8,21 +8,23 @@
     <meta charset="utf-8">
     <meta content="text/html">
     <title>Product Management</title>
-    <link rel="stylesheet" href="../../css/html.css">
+    <link rel="stylesheet" href="html.css">
 </head>
 <body>
 <div class="registration-cssave">
 
-    <form method="post" action="http://localhost:8080/ProjectShop/product">
+    <form method="post" action="http://localhost:8080/GSProject/searchproduct">
         <h2>Product Management</h2>
         <div>
             <label>
                 <span>Product ID:</span>
-                <input class="form-control item" type="text" name="productId" placeholder="ProductId">
+                <input class="form-control item" type="text" name="productId" placeholder="ProductId" required>
             </label>
         </div>
         <button class="btn btn-primary btn-block create-account" type="submit" name="action" value="search">Search
         </button>
+    </form>
+    <form method="post" action="http://localhost:8080/GSProject/product">
         <h3>Add New Product</h3>
         <div>
             <label>
@@ -60,11 +62,14 @@
         <button class="btn btn-primary btn-block create-account" type="submit" name="action" value="add">Add
             Product
         </button>
+    </form>
+    <form method="post" action="http://localhost:8080/GSProject/deleteproduct">
         <h3>Delete Product</h3>
         <div>
             <label>
                 <span>Product ID:</span>
-                <input class="form-control item" type="text" name="deleteProductId" placeholder="DeleteProductId">
+                <input class="form-control item" type="text" name="deleteProductId" placeholder="DeleteProductId"
+                       required>
             </label>
         </div>
         <input type="hidden" id="deleteProductIdHidden" name="deleteProductId" value="${product.id}">
