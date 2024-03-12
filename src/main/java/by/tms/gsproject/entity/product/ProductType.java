@@ -1,10 +1,9 @@
 package by.tms.gsproject.entity.product;
 
-public class ProductType {
-    public enum Type{
+public enum ProductType {
     SPORT,
     STRATEGY,
     SHOOTER,
     FIGHTING,
     RACING
-}}
+}

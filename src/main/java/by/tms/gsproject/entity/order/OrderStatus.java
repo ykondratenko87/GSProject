@@ -1,10 +1,8 @@
 package by.tms.gsproject.entity.order;
 
-public class OrderStatus {
-    public enum Status {
+public enum OrderStatus {
         UN_FORMED,
         ASSEMBLY,
         ON_WAY,
         COMPLETED
     }
-}
