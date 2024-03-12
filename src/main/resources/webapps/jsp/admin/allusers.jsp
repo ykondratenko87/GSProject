@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="by.teachmeskills.projectshop.entity.*" %>
+<%@ page import="by.tms.gsproject.entity.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
