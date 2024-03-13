@@ -20,7 +20,7 @@ public class Filter implements jakarta.servlet.Filter {
         }
         User authenticatedUser = (User) httpRequest.getSession().getAttribute("authenticatedUser");
         if (authenticatedUser == null) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/auth/registration.jsp");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/auth/login.jsp");
             return;
         }
         UserRole.Role userRole = authenticatedUser.getRole();

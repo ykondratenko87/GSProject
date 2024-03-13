@@ -3,6 +3,7 @@ package by.tms.gsproject.service.user;
 import by.tms.gsproject.api.user.UserRequest;
 import by.tms.gsproject.entity.user.User;
 import by.tms.gsproject.mapper.UserMapper;
+import by.tms.gsproject.repository.user.UserDBRepository;
 import by.tms.gsproject.repository.user.UserFileRepository;
 import by.tms.gsproject.repository.user.UserRepository;
 
@@ -12,7 +13,7 @@ public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = new UserFileRepository();
+        this.userRepository = new UserDBRepository();
     }
 
     @Override
@@ -21,10 +22,10 @@ public class UserService implements UserServiceInterface {
         User user = userMapper.toEntity(userRequest);
 
         Collection<User> allUsers = userRepository.allUsers();
-        boolean userExists = allUsers.stream().anyMatch(u -> u.getLogin().equals(user.getLogin()));
-        if (userExists) {
-            throw new IllegalArgumentException("Пользователь уже существует");
-        }
+//        boolean userExists = allUsers.stream().anyMatch(u -> u.getLogin().equals(user.getLogin()));
+//        if (userExists) {
+//            throw new IllegalArgumentException("Пользователь уже существует");
+//        }
         userRepository.add(user);
     }
 
