@@ -5,7 +5,7 @@ import by.tms.gsproject.entity.user.User;
 import java.sql.*;
 import java.util.Collection;
 
-public class UserRepositoryImpl implements UserRepository {
+public class UserDBRepository implements UserRepository {
     private final String ADD_USER = "insert into gsproject.users (id, \"name\",surname, login, password, role) " + "values (?,?,?,?,?,?)";
     private final String MAX_ID = "select max(id) from gsproject.users";
 
