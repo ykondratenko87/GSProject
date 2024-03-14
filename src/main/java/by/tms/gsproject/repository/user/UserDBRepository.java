@@ -1,6 +1,6 @@
 package by.tms.gsproject.repository.user;
 
-import by.tms.gsproject.config.DataBaseConnection;
+import by.tms.gsproject.config.JDBCConnection;
 import by.tms.gsproject.entity.user.User;
 import by.tms.gsproject.entity.user.UserRole;
 
@@ -14,7 +14,7 @@ public class UserDBRepository implements UserRepository {
 
     @Override
     public User add(User user) {
-        try (Connection connection = DataBaseConnection.getConnection();
+        try (Connection connection = JDBCConnection.getConnection();
              PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users");
              PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID)) {
             ResultSet countResult = countStatement.executeQuery();
@@ -56,7 +56,7 @@ public class UserDBRepository implements UserRepository {
     @Override
     public Collection<User> allUsers() {
         Collection<User> allUsers = new ArrayList<>();
-        try (Connection connection = DataBaseConnection.getConnection();
+        try (Connection connection = JDBCConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {

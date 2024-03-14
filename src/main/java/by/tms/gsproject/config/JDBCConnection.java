@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DataBaseConnection {
+public class JDBCConnection {
     private static final String URL = "jdbc:postgresql://localhost:5432/gsbase";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "1111";
