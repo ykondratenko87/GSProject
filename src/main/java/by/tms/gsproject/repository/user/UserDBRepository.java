@@ -70,14 +70,19 @@ public class UserDBRepository implements UserRepository {
     public Collection<User> allUsers() {
         Collection<User> allUsers = new ArrayList<>();
         Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         try {
             String url = "jdbc:postgresql://localhost:5432/gsbase";
             String username = "postgres";
             String password = "1111";
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, username, password);
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from gsproject.users");
+
+            String query = "SELECT * FROM gsproject.users";
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 String id = resultSet.getString(1);
                 String name = resultSet.getString(2);
