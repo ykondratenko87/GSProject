@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductRepository productRepository = new FileProductRepository();
     private final ProductMapper productMapper = new ProductMapper();
 
-    public void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
         if ("search".equals(action)) {

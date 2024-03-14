@@ -1,7 +1,6 @@
 package by.tms.gsproject.entity.user;
 
 import by.tms.gsproject.entity.user.UserRole.Role;
-
 import lombok.Data;
 
 import java.io.Serializable;

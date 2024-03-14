@@ -28,7 +28,6 @@ public class Filter implements jakarta.servlet.Filter {
             chain.doFilter(request, response);
             return;
         }
-
         if (userRole == UserRole.Role.CLIENT && path.startsWith("/jsp/admin/")) {
             request.setAttribute("error", "У вас недостаточно прав!");
             request.getRequestDispatcher("/jsp/exception/error.jsp").forward(request, response);

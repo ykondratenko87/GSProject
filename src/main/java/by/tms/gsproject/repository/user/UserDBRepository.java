@@ -1,5 +1,6 @@
 package by.tms.gsproject.repository.user;
 
+import by.tms.gsproject.config.DataBaseConnection;
 import by.tms.gsproject.entity.user.User;
 import by.tms.gsproject.entity.user.UserRole;
 
@@ -13,14 +14,9 @@ public class UserDBRepository implements UserRepository {
 
     @Override
     public User add(User user) {
-        Connection connection = null;
-        try {
-            String url = "jdbc:postgresql://localhost:5432/gsbase";
-            String username = "postgres";
-            String password = "1111";
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(url, username, password);
-            PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users");
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users");
+             PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID)) {
             ResultSet countResult = countStatement.executeQuery();
             countResult.next();
             int userCount = countResult.getInt(1);
@@ -32,10 +28,9 @@ public class UserDBRepository implements UserRepository {
                 preparedStatement = connection.prepareStatement(ADD_USER);
                 user.setRole(UserRole.Role.CLIENT);
             }
-            PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID);
             ResultSet resultSet = preparedStatementMax.executeQuery();
             resultSet.next();
-            var maxId = resultSet.getLong(1);
+            long maxId = resultSet.getLong(1);
             preparedStatement.setLong(1, ++maxId);
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getSurname());
@@ -43,16 +38,8 @@ public class UserDBRepository implements UserRepository {
             preparedStatement.setString(5, user.getPassword());
             preparedStatement.setString(6, String.valueOf(user.getRole()));
             preparedStatement.execute();
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
         return user;
     }
@@ -69,40 +56,22 @@ public class UserDBRepository implements UserRepository {
     @Override
     public Collection<User> allUsers() {
         Collection<User> allUsers = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            String url = "jdbc:postgresql://localhost:5432/gsbase";
-            String username = "postgres";
-            String password = "1111";
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(url, username, password);
-
-            String query = "SELECT * FROM gsproject.users";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users");
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-                String id = resultSet.getString(1);
+                long id = resultSet.getLong(1);
                 String name = resultSet.getString(2);
                 String surname = resultSet.getString(3);
                 String login = resultSet.getString(4);
-                String password1 = resultSet.getString(5);
-                String role = resultSet.getString(6);
-                User user = new User(Long.valueOf(id), name, surname, login, password1, role);
+                String password = resultSet.getString(5);
+                String roleString = resultSet.getString(6);
+                UserRole.Role role = UserRole.Role.valueOf(roleString);
+                User user = new User(id, name, surname, login, password, role);
                 allUsers.add(user);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
         }
         return allUsers;
     }

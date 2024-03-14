@@ -1,4 +1,4 @@
 package by.tms.gsproject.service.order;
 
-public class OrderService implements OrderServiceInterface{
+public class OrderService implements OrderServiceInterface {
 }

@@ -22,10 +22,10 @@ public class UserService implements UserServiceInterface {
         User user = userMapper.toEntity(userRequest);
 
         Collection<User> allUsers = userRepository.allUsers();
-//        boolean userExists = allUsers.stream().anyMatch(u -> u.getLogin().equals(user.getLogin()));
-//        if (userExists) {
-//            throw new IllegalArgumentException("Пользователь уже существует");
-//        }
+        boolean userExists = allUsers.stream().anyMatch(u -> u.getLogin().equals(user.getLogin()));
+        if (userExists) {
+            throw new IllegalArgumentException("Пользователь уже существует");
+        }
         userRepository.add(user);
     }
 
