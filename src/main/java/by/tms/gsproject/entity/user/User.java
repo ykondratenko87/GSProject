@@ -25,7 +25,4 @@ public class User implements Serializable {
 
     public User() {
     }
-
-    public User(Long id, String name, String surname, String login, String password, String role) {
-    }
 }

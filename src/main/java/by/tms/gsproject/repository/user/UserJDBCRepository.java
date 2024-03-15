@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class UserDBRepository implements UserRepository {
+public class UserJDBCRepository implements UserRepository {
     private final String ADD_USER = "insert into gsproject.users (id, \"name\",surname, login, password, role) " + "values (?,?,?,?,?,?)";
     private final String MAX_ID = "select max(id) from gsproject.users";
 

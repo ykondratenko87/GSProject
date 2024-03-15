@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class FileProductRepository implements ProductRepository, Serializable {
+public class ProductFileRepository implements ProductRepository, Serializable {
     private static final String FILE_PATH = "d:\\Java\\C72-JavaProjects\\GSProject\\src\\main\\resources\\files\\product.ser";
 
     @Override

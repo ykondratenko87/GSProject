@@ -3,8 +3,7 @@ package by.tms.gsproject.service.user;
 import by.tms.gsproject.api.user.UserRequest;
 import by.tms.gsproject.entity.user.User;
 import by.tms.gsproject.mapper.UserMapper;
-import by.tms.gsproject.repository.user.UserDBRepository;
-import by.tms.gsproject.repository.user.UserFileRepository;
+import by.tms.gsproject.repository.user.UserJDBCRepository;
 import by.tms.gsproject.repository.user.UserRepository;
 
 import java.util.Collection;
@@ -13,7 +12,7 @@ public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = new UserDBRepository();
+        this.userRepository = new UserJDBCRepository();
     }
 
     @Override
