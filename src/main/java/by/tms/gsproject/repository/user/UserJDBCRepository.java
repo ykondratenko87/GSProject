@@ -19,10 +19,10 @@ public class UserJDBCRepository implements UserRepository {
              PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID)) {
             ResultSet countResult = countStatement.executeQuery();
             countResult.next();
-            int userCount = countResult.getInt(1);
+            long userCount = countResult.getLong(1);
             PreparedStatement preparedStatement;
             if (userCount == 0) {
-                preparedStatement = connection.prepareStatement("INSERT INTO gsproject.users (id, \"name\", surname, login, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+                preparedStatement = connection.prepareStatement(ADD_USER);
                 user.setRole(UserRole.Role.ADMIN);
             } else {
                 preparedStatement = connection.prepareStatement(ADD_USER);
