@@ -5,7 +5,7 @@ import by.tms.gsproject.api.product.ProductResponse;
 import by.tms.gsproject.mapper.ProductMapper;
 import by.tms.gsproject.entity.product.Product;
 import by.tms.gsproject.repository.product.ProductRepository;
-import by.tms.gsproject.repository.product.FileProductRepository;
+import by.tms.gsproject.repository.product.ProductFileRepository;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.Collection;
 
 public class ProductController {
-    private final ProductRepository productRepository = new FileProductRepository();
+    private final ProductRepository productRepository = new ProductFileRepository();
     private final ProductMapper productMapper = new ProductMapper();
 
-    public void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
         if ("search".equals(action)) {

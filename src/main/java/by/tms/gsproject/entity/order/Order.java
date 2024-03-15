@@ -7,5 +7,5 @@ public class Order {
     private Long id;
     private Long userId;
     private Long cost;
-    private String status;
+    private OrderStatus status;
 }

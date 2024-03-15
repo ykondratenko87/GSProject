@@ -53,8 +53,6 @@ public class AllUsersController {
         } else if ("showAll".equals(action)) {
             Collection<User> allUsers = repository.allUsers();
             req.setAttribute("users", allUsers);
-
-
         } else if ("edit".equals(action)) {
             String userIdString = req.getParameter("editUserId");
             long userId = Long.parseLong(userIdString);

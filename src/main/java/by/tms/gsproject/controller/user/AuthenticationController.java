@@ -16,7 +16,7 @@ public class AuthenticationController {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
         }
         UserRequest userRequest = new UserRequest();
         userRequest.setLogin(login);
@@ -24,15 +24,15 @@ public class AuthenticationController {
         UserService userService = new UserService();
         User authenticate = userService.authenticate(userRequest);
         if (authenticate == null) {
-            req.getRequestDispatcher("/jsp/auth/registration.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/auth/registration.jsp").forward(req, resp);
         }
         HttpSession session = req.getSession(true);
         session.setAttribute("authenticatedUser", authenticate);
         assert authenticate != null;
         if (authenticate.getRole().equals(Role.ADMIN)) {
-            req.getRequestDispatcher("/jsp/admin/admin.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/admin/admin.jsp").forward(req, resp);
         } else {
-            req.getRequestDispatcher("/jsp/client/client.jsp").forward(req,resp);
+            req.getRequestDispatcher("/jsp/client/client.jsp").forward(req, resp);
         }
     }
 }

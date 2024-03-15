@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class FileProductRepository implements ProductRepository, Serializable {
+public class ProductFileRepository implements ProductRepository, Serializable {
     private static final String FILE_PATH = "d:\\Java\\C72-JavaProjects\\GSProject\\src\\main\\resources\\files\\product.ser";
 
     @Override
@@ -14,9 +14,7 @@ public class FileProductRepository implements ProductRepository, Serializable {
         Collection<Product> allProducts = allProducts();
         boolean productExists = false;
         for (Product existingProduct : allProducts) {
-            if (existingProduct.getName().equals(product.getName()) &&
-                    existingProduct.getType().equals(product.getType()) &&
-                    existingProduct.getPrice() == product.getPrice()) {
+            if (existingProduct.getName().equals(product.getName()) && existingProduct.getType().equals(product.getType()) && existingProduct.getPrice() == product.getPrice()) {
                 existingProduct.setQuantity(existingProduct.getQuantity() + product.getQuantity());
                 productExists = true;
                 break;
@@ -40,10 +38,7 @@ public class FileProductRepository implements ProductRepository, Serializable {
 
     @Override
     public Product findById(long productId) {
-        return allProducts().stream()
-                .filter(product -> product.getId() == productId)
-                .findFirst()
-                .orElse(null);
+        return allProducts().stream().filter(product -> product.getId() == productId).findFirst().orElse(null);
     }
 
     @Override

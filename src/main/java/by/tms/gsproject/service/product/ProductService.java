@@ -4,14 +4,15 @@ import by.tms.gsproject.api.product.ProductRequest;
 import by.tms.gsproject.api.product.ProductResponse;
 import by.tms.gsproject.entity.product.Product;
 import by.tms.gsproject.mapper.ProductMapper;
+import by.tms.gsproject.repository.product.ProductJDBCRepository;
 import by.tms.gsproject.repository.product.ProductRepository;
-import by.tms.gsproject.repository.product.FileProductRepository;
+import by.tms.gsproject.repository.product.ProductFileRepository;
 
 public class ProductService implements ProductServiceInterface {
     private final ProductRepository productRepository;
 
     public ProductService() {
-        this.productRepository = new FileProductRepository();
+        this.productRepository = new ProductJDBCRepository();
     }
 
     public void addProduct(ProductRequest productRequest) {
