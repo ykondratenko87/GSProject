@@ -6,15 +6,18 @@ import by.tms.gsproject.entity.product.Product;
 import by.tms.gsproject.mapper.ProductMapper;
 import by.tms.gsproject.repository.product.ProductRepository;
 import by.tms.gsproject.repository.product.FileProductRepository;
-import by.tms.gsproject.service.product.ProductServiceInterface;
 
 public class ProductService implements ProductServiceInterface {
-    private final ProductRepository productRepository = new FileProductRepository();
-    private final ProductMapper productMapper = new ProductMapper();
+    private final ProductRepository productRepository;
+
+    public ProductService() {
+        this.productRepository = new FileProductRepository();
+    }
 
     public void addProduct(ProductRequest productRequest) {
-        Product newProduct = productMapper.toEntity(productRequest);
-        productRepository.add(newProduct);
+        ProductMapper productMapper = new ProductMapper();
+        Product product = productMapper.toEntity(productRequest);
+        productRepository.add(product);
     }
 
     public void deleteProduct(long productId) {
@@ -22,6 +25,7 @@ public class ProductService implements ProductServiceInterface {
     }
 
     public ProductResponse getProductById(long productId) {
+        ProductMapper productMapper = new ProductMapper();
         Product product = productRepository.findById(productId);
         if (product != null) {
             return productMapper.toResponse(product);

@@ -7,16 +7,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class FileProductRepository implements ProductRepository, Serializable {
-    private static final String FILE_PATH = "d:\\Java\\C72-JavaProjects\\ProjectShop\\src\\main\\resources\\files\\product.ser";
+    private static final String FILE_PATH = "d:\\Java\\C72-JavaProjects\\GSProject\\src\\main\\resources\\files\\product.ser";
 
     @Override
     public void add(Product product) {
-        long lastId = getLastId();
-        lastId++;
-        product.setId(lastId);
-
         Collection<Product> allProducts = allProducts();
-        allProducts.add(product);
+        boolean productExists = false;
+        for (Product existingProduct : allProducts) {
+            if (existingProduct.getName().equals(product.getName()) &&
+                    existingProduct.getType().equals(product.getType()) &&
+                    existingProduct.getPrice() == product.getPrice()) {
+                existingProduct.setQuantity(existingProduct.getQuantity() + product.getQuantity());
+                productExists = true;
+                break;
+            }
+        }
+        if (!productExists) {
+            long lastId = getLastId();
+            lastId++;
+            product.setId(lastId);
+            allProducts.add(product);
+        }
         saveProducts(allProducts);
     }
 

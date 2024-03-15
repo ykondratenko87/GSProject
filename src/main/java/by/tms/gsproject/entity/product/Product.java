@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Product implements Serializable {
     private long id;
     private String name;
-    private ProductType type;
+    private String type;
     private double price;
     private int quantity;
 }

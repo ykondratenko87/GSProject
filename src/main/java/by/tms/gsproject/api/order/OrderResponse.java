@@ -1,9 +1,9 @@
-package by.tms.gsproject.entity.order;
+package by.tms.gsproject.api.order;
 
 import lombok.Data;
 
 @Data
-public class Order {
+public class OrderResponse {
     private Long id;
     private Long userId;
     private Long cost;

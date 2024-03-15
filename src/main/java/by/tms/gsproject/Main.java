@@ -20,5 +20,11 @@ public class Main {
         for (Product product : productRepository.allProducts()) {
             System.out.println(product);
         }
+//        Product product = new Product();
+//        product.setName("NHL 24");
+//        product.setType("SPORT");
+//        product.setPrice(30);
+//        product.setQuantity(2);
+//        productRepository.add(product);
     }
 }
