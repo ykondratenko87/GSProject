@@ -77,10 +77,6 @@
             }
         }
 
-        .text-center::before {
-            content: none;
-        }
-
         .registration-cssave .create-account:hover {
             background-color: #2a6dbb;
             cursor: pointer;
@@ -97,7 +93,6 @@
                 <input class="form-control item" type="text" name="userLogin" placeholder="UserLogin">
             </label>
         </div>
-
         <div>
             <label>
                 <span>ID:</span>

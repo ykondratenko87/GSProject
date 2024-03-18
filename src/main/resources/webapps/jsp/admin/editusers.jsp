@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Product Management</title>
     <style>
         body, html {
             margin: 0;
@@ -20,6 +20,10 @@
             background-repeat: no-repeat;
             background-size: cover;
             height: 100%;
+        }
+
+        .registration-cssave form button.create-account {
+            width: 200px;
         }
 
         body {
@@ -53,13 +57,6 @@
             margin-bottom: 5px;
         }
 
-        .registration-cssave .item {
-            border-radius: 10px;
-            padding: 10px 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
         .registration-cssave .create-account {
             border-radius: 30px;
             padding: 10px 20px;
@@ -85,21 +82,32 @@
 </head>
 <body>
 <div class="registration-cssave">
-    <form method="post" action="http://localhost:8080/GSProject/deleteuser">
-        <h3>Delete User</h3>
+    <h3>Admin Panel: Users</h3>
+    <form method="get" action="searchuser.jsp">
         <div>
-            <label>
-                <span>User ID:</span>
-                <input class="form-control item" type="text" name="deleteUserId" placeholder="DeleteUserId"
-                       required>
-            </label>
+            <button type="submit" class="create-account">Search User</button>
         </div>
-        <button class="btn btn-primary btn-block create-account" type="submit" name="action" value="delete">Delete
-            User
-        </button>
     </form>
-    <c:if test="${not empty message}">
-        <div class="success-message">${message}</div>
+    <form method="get" action="deleteuser.jsp">
+        <div>
+            <button type="submit" class="create-account">Delete User</button>
+        </div>
+    </form>
+    <form method="post" action="http://localhost:8080/GSProject/editusers">
+        <div>
+            <button type="submit" class="create-account">Show All Users</button>
+        </div>
+    </form>
+    <c:if test="${not empty users}">
+        <div class="all-users">
+            <h3>All Users</h3>
+            <ul>
+                <c:forEach var="user" items="${users}">
+                    <li>ID: ${user.id}, Name: ${user.name}, Surname: ${user.surname}, Login: ${user.login},
+                        Password: ${user.password}, Role: ${user.role}</li>
+                </c:forEach>
+            </ul>
+        </div>
     </c:if>
 </div>
 </body>

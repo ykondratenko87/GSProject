@@ -14,7 +14,7 @@ public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = new UserFileRepository();
+        this.userRepository = new UserJDBCRepository();
     }
 
     @Override
@@ -75,5 +75,10 @@ public class UserService implements UserServiceInterface {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Collection<User> allUsers() {
+        return userRepository.allUsers();
     }
 }

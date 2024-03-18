@@ -51,24 +51,6 @@
             margin-bottom: 5px;
         }
 
-        .registration-cssave .item {
-            border-radius: 10px;
-            padding: 10px 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .registration-cssave .create-account {
-            border-radius: 30px;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: #3f93ff;
-            border: none;
-            color: white;
-            margin-top: 20px;
-        }
-
         @media (max-width: 576px) {
             .registration-cssave form {
                 padding: 50px 20px;
@@ -77,11 +59,6 @@
 
         .text-center::before {
             content: none;
-        }
-
-        .registration-cssave .create-account:hover {
-            background-color: #2a6dbb;
-            cursor: pointer;
         }
     </style>
 </head>

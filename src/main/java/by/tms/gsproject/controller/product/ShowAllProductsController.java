@@ -20,7 +20,7 @@ public class ShowAllProductsController {
     public void showAllProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Collection<Product> products = productService.allProducts();
         request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/admin/admin.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/admin/editproducts.jsp");
         dispatcher.forward(request, response);
     }
 }
