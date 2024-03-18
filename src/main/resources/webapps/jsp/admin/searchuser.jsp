@@ -2,14 +2,16 @@
 <%@ page import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="by.tms.gsproject.entity.*" %>
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta content="text/html">
-    <title>Форма входа</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
     <style>
-        html {
+        body, html {
+            margin: 0;
+            padding: 0;
             background-color: #214c84;
             background-blend-mode: overlay;
             display: flex;
@@ -87,28 +89,36 @@
 </head>
 <body>
 <div class="registration-cssave">
-    <form method="post" action="http://localhost:8080/GSProject/login">
-        <h3 class="text-center">Login</h3>
-        <p class="text-white-50 mb-5">Please enter your login and password!</p>
-        <div class="form-group">
+    <form method="post" action="http://localhost:8080/GSProject/searchuser">
+        <h3>Search User</h3>
+        <div>
             <label>
-                <span>Login</span>
-                <input class="form-control item" type="text" name="login" maxlength="15" minlength="4"
-                       pattern="^[a-zA-Z0-9_.-]*$" placeholder="Login" required>
+                <span>Login:</span>
+                <input class="form-control item" type="text" name="userLogin" placeholder="UserLogin">
             </label>
         </div>
-        <div class="form-group">
+
+        <div>
             <label>
-                <span>Password</span>
-                <input class="form-control item" type="password" name="password" minlength="6" placeholder="Password"
-                       required>
+                <span>ID:</span>
+                <input class="form-control item" type="text" name="userId" placeholder="UserId">
             </label>
         </div>
-        <div class="form-group">
-            <button class="btn btn-primary btn-block create-account" type="Submit">Log in</button>
-        </div>
-        <p>Don't have an account? <a href="registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
+        <button class="btn btn-primary btn-block create-account" type="submit" name="action" value="search">Search
+        </button>
     </form>
+    <c:if test="${not empty user}">
+        <h3>User Details</h3>
+        <p>ID: ${user.id}</p>
+        <p>Name: ${user.name}</p>
+        <p>Surname: ${user.surname}</p>
+        <p>Login: ${user.login}</p>
+        <p>Password: ${user.password}</p>
+        <p>Role: ${user.role}</p>
+    </c:if>
+    <c:if test="${not empty searchResult}">
+        <p>${searchResult}</p>
+    </c:if>
 </div>
 </body>
 </html>

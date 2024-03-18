@@ -43,7 +43,7 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public Collection<Product> allProducts() {
-        return null;
+        return productRepository.allProducts();
     }
 
     @Override

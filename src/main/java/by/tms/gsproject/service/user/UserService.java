@@ -1,8 +1,10 @@
 package by.tms.gsproject.service.user;
 
 import by.tms.gsproject.api.user.UserRequest;
+import by.tms.gsproject.api.user.UserResponse;
 import by.tms.gsproject.entity.user.User;
 import by.tms.gsproject.mapper.UserMapper;
+import by.tms.gsproject.repository.user.UserFileRepository;
 import by.tms.gsproject.repository.user.UserJDBCRepository;
 import by.tms.gsproject.repository.user.UserRepository;
 
@@ -12,7 +14,7 @@ public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
 
     public UserService() {
-        this.userRepository = new UserJDBCRepository();
+        this.userRepository = new UserFileRepository();
     }
 
     @Override
@@ -51,5 +53,27 @@ public class UserService implements UserServiceInterface {
         UserMapper userMapper = new UserMapper();
         User user = userMapper.toEntity(userRequest);
         userRepository.update(user);
+    }
+
+    @Override
+    public UserResponse getUserByLogin(String userLogin) {
+        UserMapper userMapper = new UserMapper();
+        User user = userRepository.findByLogin(userLogin);
+        if (user != null) {
+            return userMapper.toResponse(user);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserResponse getUserById(long userId) {
+        UserMapper userMapper = new UserMapper();
+        User user = userRepository.getUserById(userId);
+        if (user != null) {
+            return userMapper.toResponse(user);
+        } else {
+            return null;
+        }
     }
 }
