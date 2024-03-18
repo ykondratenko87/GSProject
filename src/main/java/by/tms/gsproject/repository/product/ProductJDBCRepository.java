@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ProductJDBCRepository implements ProductRepository {
     private final String ADD_PRODUCT = "insert into gsproject.products (id, \"name\",type, price, quantity) " + "values (?,?,?,?,?)";
@@ -65,11 +66,35 @@ public class ProductJDBCRepository implements ProductRepository {
 
     @Override
     public void deleteById(long productId) {
+        try (Connection connection = JDBCConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM gsproject.products WHERE id = ?")) {
+            preparedStatement.setLong(1, productId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete product with ID: " + productId, e);
+        }
     }
 
     @Override
     public Product findById(long productId) {
-        return null;
+        try (Connection connection = JDBCConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products WHERE id = ?")) {
+            preparedStatement.setLong(1, productId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    long id = resultSet.getLong("id");
+                    String name = resultSet.getString("name");
+                    String type = resultSet.getString("type");
+                    double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
+                    return new Product(id, name, type, price, quantity);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find product with ID: " + productId, e);
+        }
     }
 
     @Override
@@ -91,5 +116,27 @@ public class ProductJDBCRepository implements ProductRepository {
             throw new RuntimeException(e);
         }
         return allProducts;
+    }
+
+    @Override
+    public Product findByName(String productName) {
+        try (Connection connection = JDBCConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products WHERE name = ?")) {
+            preparedStatement.setString(1, productName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    long id = resultSet.getLong("id");
+                    String name = resultSet.getString("name");
+                    String type = resultSet.getString("type");
+                    double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
+                    return new Product(id, name, type, price, quantity);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find product with name: " + productName, e);
+        }
     }
 }
