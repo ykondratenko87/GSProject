@@ -20,7 +20,7 @@ public class ShowAllUsersController {
     public void showAllUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Collection<User> users = userService.allUsers();
         request.setAttribute("users", users);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/admin/editusers.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/jsp/admin/editusers.jsp").forward(request, response);
+
     }
 }

@@ -91,12 +91,7 @@
 <body>
 <div class="registration-cssave">
     <h3>Your Account</h3>
-    <form method="get" action="jsp/client/editprofile.jsp">
-        <div>
-            <button type="submit" class="create-account">Edit Profile</button>
-        </div>
-    </form>
-    <form method="get" action="jsp/admin/products.jsp">
+    <form method="get" action="products.jsp">
         <div>
             <button type="submit" class="create-account">Products</button>
         </div>

@@ -33,6 +33,6 @@ public class Filter implements jakarta.servlet.Filter {
             request.getRequestDispatcher("/jsp/exception/error.jsp").forward(request, response);
             return;
         }
-        httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/exception/error.jsp");
+        chain.doFilter(request, response);
     }
 }
