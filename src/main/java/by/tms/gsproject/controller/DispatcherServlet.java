@@ -1,9 +1,6 @@
 package by.tms.gsproject.controller;
 
-import by.tms.gsproject.controller.product.AddProductController;
-import by.tms.gsproject.controller.product.DeleteProductController;
-import by.tms.gsproject.controller.product.SearchProductController;
-import by.tms.gsproject.controller.product.ShowAllProductsController;
+import by.tms.gsproject.controller.product.*;
 import by.tms.gsproject.controller.user.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -62,6 +59,10 @@ public class DispatcherServlet extends HttpServlet {
         if ("/client".equals(path)) {
             LogoutClientController logoutClientController = new LogoutClientController();
             logoutClientController.logoutClient(request, response);
+        }
+        if ("/products".equals(path)) {
+            ShowProductsClientController showProductsClientController = new ShowProductsClientController();
+            showProductsClientController.showAProducts(request, response);
         }
     }
 }
