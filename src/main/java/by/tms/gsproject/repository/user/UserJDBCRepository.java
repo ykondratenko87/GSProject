@@ -14,9 +14,7 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public User add(User user) {
-        try (Connection connection = JDBCConnection.getConnection();
-             PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users");
-             PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID)) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users"); PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID)) {
             ResultSet countResult = countStatement.executeQuery();
             countResult.next();
             long userCount = countResult.getLong(1);
@@ -46,6 +44,12 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public void deleteById(Long userId) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM gsproject.users WHERE id = ?")) {
+            preparedStatement.setLong(1, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete user with ID: " + userId, e);
+        }
     }
 
     @Override
@@ -56,9 +60,7 @@ public class UserJDBCRepository implements UserRepository {
     @Override
     public Collection<User> allUsers() {
         Collection<User> allUsers = new ArrayList<>();
-        try (Connection connection = JDBCConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users");
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users"); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 long id = resultSet.getLong(1);
                 String name = resultSet.getString(2);
@@ -78,6 +80,47 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public User getUserById(Long userId) {
-        return null;
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users WHERE id = ?")) {
+            preparedStatement.setLong(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    long id = resultSet.getLong(1);
+                    String name = resultSet.getString(2);
+                    String surname = resultSet.getString(3);
+                    String login = resultSet.getString(4);
+                    String password = resultSet.getString(5);
+                    String roleString = resultSet.getString(6);
+                    UserRole.Role role = UserRole.Role.valueOf(roleString);
+                    return new User(id, name, surname, login, password, role);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user with ID: " + userId, e);
+        }
+    }
+
+    @Override
+    public User findByLogin(String userLogin) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users WHERE login = ?")) {
+            preparedStatement.setString(1, userLogin);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    long id = resultSet.getLong(1);
+                    String name = resultSet.getString(2);
+                    String surname = resultSet.getString(3);
+                    String login = resultSet.getString(4);
+                    String password = resultSet.getString(5);
+                    String roleString = resultSet.getString(6);
+                    UserRole.Role role = UserRole.Role.valueOf(roleString);
+                    return new User(id, name, surname, login, password, role);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user with login: " + userLogin, e);
+        }
     }
 }

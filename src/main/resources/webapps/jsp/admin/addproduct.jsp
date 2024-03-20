@@ -77,10 +77,6 @@
             }
         }
 
-        .text-center::before {
-            content: none;
-        }
-
         .registration-cssave .create-account:hover {
             background-color: #2a6dbb;
             cursor: pointer;

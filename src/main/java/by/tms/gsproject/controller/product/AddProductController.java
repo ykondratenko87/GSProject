@@ -21,9 +21,7 @@ public class AddProductController {
         productRequest.setType(request.getParameter("type"));
         productRequest.setPrice(Double.parseDouble(request.getParameter("price")));
         productRequest.setQuantity(Integer.parseInt(request.getParameter("quantity")));
-
         productService.addProduct(productRequest);
-
         request.setAttribute("message", "Товар успешно добавлен");
         request.getRequestDispatcher("/jsp/admin/addproduct.jsp").forward(request, response);
     }

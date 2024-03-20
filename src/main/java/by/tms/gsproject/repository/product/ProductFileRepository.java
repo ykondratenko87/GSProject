@@ -63,4 +63,15 @@ public class ProductFileRepository implements ProductRepository, Serializable {
         Collection<Product> products = allProducts();
         return products.stream().mapToLong(Product::getId).max().orElse(0);
     }
+
+    @Override
+    public Product findByName(String productName) {
+        Collection<Product> allProducts = allProducts();
+        for (Product product : allProducts) {
+            if (product.getName().equals(productName)) {
+                return product;
+            }
+        }
+        return null;
+    }
 }

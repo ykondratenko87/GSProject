@@ -14,4 +14,6 @@ public interface UserRepository {
     Collection<User> allUsers();
 
     User getUserById(Long userId);
+
+    User findByLogin(String userLogin);
 }

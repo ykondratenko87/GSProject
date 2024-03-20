@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client panel</title>
+    <title>Product Management</title>
     <style>
         body, html {
             margin: 0;
@@ -32,14 +32,6 @@
 
         .registration-cssave {
             padding: 50px 0;
-        }
-
-        #logout-form .logout-button {
-            background-color: red;
-        }
-
-        #logout-form .logout-button:hover {
-            background-color: darkred;
         }
 
         .registration-cssave form {
@@ -90,17 +82,38 @@
 </head>
 <body>
 <div class="registration-cssave">
-    <h3>Your Account</h3>
-    <form method="post" action="jsp/client/products.jsp">
+    <h3>Admin Panel: Products</h3>
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/searchproduct.jsp">
         <div>
-            <button type="submit" class="create-account">Products</button>
+            <button type="submit" class="create-account">Search Product</button>
         </div>
     </form>
-    <form id="logout-form" method="post" action="http://localhost:8080/GSProject/client">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/deleteproduct.jsp">
         <div>
-            <button type="submit" class="create-account logout-button">Log out</button>
+            <button type="submit" class="create-account">Delete Product</button>
         </div>
     </form>
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/addproduct.jsp">
+        <div>
+            <button type="submit" class="create-account">Add New Product</button>
+        </div>
+    </form>
+    <form method="post" action="http://localhost:8080/GSProject/editproducts">
+        <div>
+            <button type="submit" class="create-account">Show All Products</button>
+        </div>
+    </form>
+    <c:if test="${not empty products}">
+        <div class="all-products">
+            <h3>All Products</h3>
+            <ul>
+                <c:forEach var="product" items="${products}">
+                    <li>ID: ${product.id}, Name: ${product.name}, Type: ${product.type}, Price: ${product.price},
+                        Quantity: ${product.quantity}</li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:if>
 </div>
 </body>
 </html>

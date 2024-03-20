@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client panel</title>
+    <title>User Management</title>
     <style>
         body, html {
             margin: 0;
@@ -22,24 +22,12 @@
             height: 100%;
         }
 
-        .registration-cssave form button.create-account {
-            width: 200px;
-        }
-
         body {
             background-color: transparent;
         }
 
         .registration-cssave {
             padding: 50px 0;
-        }
-
-        #logout-form .logout-button {
-            background-color: red;
-        }
-
-        #logout-form .logout-button:hover {
-            background-color: darkred;
         }
 
         .registration-cssave form {
@@ -63,6 +51,13 @@
 
         .registration-cssave form label > span {
             margin-bottom: 5px;
+        }
+
+        .registration-cssave .item {
+            border-radius: 10px;
+            padding: 10px 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .registration-cssave .create-account {
@@ -90,17 +85,35 @@
 </head>
 <body>
 <div class="registration-cssave">
-    <h3>Your Account</h3>
-    <form method="post" action="jsp/client/products.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/searchuser">
+        <h3>Search User</h3>
         <div>
-            <button type="submit" class="create-account">Products</button>
+            <label>
+                <span>Login:</span>
+                <input class="form-control item" type="text" name="userLogin" placeholder="UserLogin">
+            </label>
         </div>
-    </form>
-    <form id="logout-form" method="post" action="http://localhost:8080/GSProject/client">
         <div>
-            <button type="submit" class="create-account logout-button">Log out</button>
+            <label>
+                <span>ID:</span>
+                <input class="form-control item" type="text" name="userId" placeholder="UserId">
+            </label>
         </div>
+        <button class="btn btn-primary btn-block create-account" type="submit" name="action" value="search">Search
+        </button>
     </form>
+    <c:if test="${not empty user}">
+        <h3>User Details</h3>
+        <p>ID: ${user.id}</p>
+        <p>Name: ${user.name}</p>
+        <p>Surname: ${user.surname}</p>
+        <p>Login: ${user.login}</p>
+        <p>Password: ${user.password}</p>
+        <p>Role: ${user.role}</p>
+    </c:if>
+    <c:if test="${not empty searchResult}">
+        <p>${searchResult}</p>
+    </c:if>
 </div>
 </body>
 </html>

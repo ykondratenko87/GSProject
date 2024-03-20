@@ -72,4 +72,15 @@ public class UserFileRepository implements UserRepository {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public User findByLogin(String userLogin) {
+        Collection<User> allUsers = allUsers();
+        for (User user : allUsers) {
+            if (user.getLogin().equals(userLogin)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
