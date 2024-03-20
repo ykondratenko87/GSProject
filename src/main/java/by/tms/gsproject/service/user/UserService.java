@@ -21,7 +21,6 @@ public class UserService implements UserServiceInterface {
     public void register(UserRequest userRequest) {
         UserMapper userMapper = new UserMapper();
         User user = userMapper.toEntity(userRequest);
-
         Collection<User> allUsers = userRepository.allUsers();
         boolean userExists = allUsers.stream().anyMatch(u -> u.getLogin().equals(user.getLogin()));
         if (userExists) {

@@ -50,7 +50,7 @@
 <body>
 <h2 class="eror">${error}</h2>
 <div class="registration-cssave">
-    <form method="post" action="http://localhost:8080/GSProject/error">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/error.jsp">
         <h3 class="text-center">Error</h3>
         <div class="error-message">
             <p>Sorry, something went wrong.</p>

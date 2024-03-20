@@ -1,6 +1,5 @@
 package by.tms.gsproject.controller.user;
 
-import by.tms.gsproject.service.product.ProductService;
 import by.tms.gsproject.service.user.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

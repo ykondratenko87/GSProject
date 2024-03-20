@@ -91,12 +91,12 @@
 <body>
 <div class="registration-cssave">
     <h3>Admin Panel</h3>
-    <form method="get" action="jsp/admin/editusers.jsp">
+    <form method="post" action="jsp/admin/editusers.jsp">
         <div>
             <button type="submit" class="create-account">Edit Users</button>
         </div>
     </form>
-    <form method="get" action="jsp/admin/editproducts.jsp">
+    <form method="post" action="jsp/admin/editproducts.jsp">
         <div>
             <button type="submit" class="create-account">Edit Products</button>
         </div>

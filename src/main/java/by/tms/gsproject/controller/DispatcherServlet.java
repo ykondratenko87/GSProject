@@ -38,12 +38,10 @@ public class DispatcherServlet extends HttpServlet {
             ShowAllProductsController showAllProductsController = new ShowAllProductsController();
             showAllProductsController.showAllProducts(request, response);
         }
-
         if ("/editusers".equals(path)) {
             ShowAllUsersController showAllUsersController = new ShowAllUsersController();
             showAllUsersController.showAllUsers(request, response);
         }
-
         if ("/deleteuser".equals(path)) {
             DeleteUserController deleteUserController = new DeleteUserController();
             deleteUserController.deleteUser(request, response);

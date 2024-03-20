@@ -83,17 +83,17 @@
 <body>
 <div class="registration-cssave">
     <h3>Admin Panel: Products</h3>
-    <form method="get" action="searchproduct.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/searchproduct.jsp">
         <div>
             <button type="submit" class="create-account">Search Product</button>
         </div>
     </form>
-    <form method="get" action="deleteproduct.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/deleteproduct.jsp">
         <div>
             <button type="submit" class="create-account">Delete Product</button>
         </div>
     </form>
-    <form method="get" action="addproduct.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/addproduct.jsp">
         <div>
             <button type="submit" class="create-account">Add New Product</button>
         </div>

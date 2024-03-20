@@ -91,7 +91,7 @@
 <body>
 <div class="registration-cssave">
     <h3>Your Account</h3>
-    <form method="get" action="jsp/client/products.jsp">
+    <form method="post" action="jsp/client/products.jsp">
         <div>
             <button type="submit" class="create-account">Products</button>
         </div>

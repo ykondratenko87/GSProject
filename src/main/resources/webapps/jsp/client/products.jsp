@@ -22,24 +22,8 @@
             height: 100%;
         }
 
-        .registration-cssave form button.create-account {
-            width: 200px;
-        }
-
         body {
             background-color: transparent;
-        }
-
-        .registration-cssave {
-            padding: 50px 0;
-        }
-
-        #logout-form .logout-button {
-            background-color: red;
-        }
-
-        #logout-form .logout-button:hover {
-            background-color: darkred;
         }
 
         .registration-cssave form {
@@ -65,27 +49,12 @@
             margin-bottom: 5px;
         }
 
-        .registration-cssave .create-account {
-            border-radius: 30px;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: #3f93ff;
-            border: none;
-            color: white;
-            margin-top: 20px;
-        }
-
         @media (max-width: 576px) {
             .registration-cssave form {
                 padding: 50px 20px;
             }
         }
 
-        .registration-cssave .create-account:hover {
-            background-color: #2a6dbb;
-            cursor: pointer;
-        }
         .product-card {
             width: 200px;
             border: 1px solid #ccc;
@@ -96,15 +65,18 @@
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .product-card h4 {
             margin: 0;
             font-size: 16px;
         }
+
         .product-card p {
             margin: 5px 0;
             font-size: 14px;
             color: #555;
         }
+
         .add-to-cart-btn {
             background-color: #3f93ff;
             color: white;
@@ -113,6 +85,7 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
         .add-to-cart-form {
             margin-top: 10px;
         }

@@ -2,7 +2,6 @@ package by.tms.gsproject.service.user;
 
 import by.tms.gsproject.api.user.UserRequest;
 import by.tms.gsproject.api.user.UserResponse;
-import by.tms.gsproject.entity.product.Product;
 import by.tms.gsproject.entity.user.User;
 
 import java.util.Collection;

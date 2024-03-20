@@ -83,12 +83,12 @@
 <body>
 <div class="registration-cssave">
     <h3>Admin Panel: Users</h3>
-    <form method="get" action="searchuser.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/searchuser.jsp">
         <div>
             <button type="submit" class="create-account">Search User</button>
         </div>
     </form>
-    <form method="get" action="deleteuser.jsp">
+    <form method="post" action="http://localhost:8080/GSProject/jsp/admin/deleteuser.jsp">
         <div>
             <button type="submit" class="create-account">Delete User</button>
         </div>
