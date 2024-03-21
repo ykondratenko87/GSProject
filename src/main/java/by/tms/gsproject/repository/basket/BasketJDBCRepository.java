@@ -1,4 +1,4 @@
 package by.tms.gsproject.repository.basket;
 
-public class BasketJDBCRepository {
+public class BasketJDBCRepository implements BasketRepository {
 }

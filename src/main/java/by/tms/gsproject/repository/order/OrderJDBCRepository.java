@@ -1,4 +1,4 @@
 package by.tms.gsproject.repository.order;
 
-public class OrderJDBCRepository {
+public class OrderJDBCRepository implements OrderRepository {
 }
