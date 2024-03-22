@@ -9,6 +9,7 @@ import by.tms.gsproject.repository.product.ProductRepository;
 import by.tms.gsproject.repository.product.ProductFileRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 public class ProductService implements ProductServiceInterface {
     private final ProductRepository productRepository;
@@ -55,5 +56,16 @@ public class ProductService implements ProductServiceInterface {
         } else {
             return null;
         }
+    }
+
+    public List<ProductResponse> getProductsByIds(List<Long> ids) {
+        ProductRepository repository = new ProductJDBCRepository();
+        List<Product> products = repository.getProductsByIds(ids);
+        if (products.isEmpty()) {
+            throw new RuntimeException("Товары не добавлены");
+        }
+        ProductMapper productMapper = new ProductMapper();
+        List<ProductResponse> productResponses = products.stream().map(product -> productMapper.toResponse(product)).toList();
+        return productResponses;
     }
 }

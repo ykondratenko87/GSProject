@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ProductJDBCRepository implements ProductRepository {
     private final String ADD_PRODUCT = "insert into gsproject.products (id, \"name\",type, price, quantity) " + "values (?,?,?,?,?)";
@@ -132,5 +133,10 @@ public class ProductJDBCRepository implements ProductRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find product with name: " + productName, e);
         }
+    }
+
+    @Override
+    public List<Product> getProductsByIds(List<Long> ids) {
+        return null;
     }
 }

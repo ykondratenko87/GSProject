@@ -1,5 +1,9 @@
 package by.tms.gsproject.controller;
 
+import by.tms.gsproject.controller.basket.BasketController;
+import by.tms.gsproject.controller.basket.CleanBasketController;
+import by.tms.gsproject.controller.order.AllOrdersController;
+import by.tms.gsproject.controller.order.OrderController;
 import by.tms.gsproject.controller.product.*;
 import by.tms.gsproject.controller.user.*;
 import jakarta.servlet.ServletException;
@@ -13,6 +17,7 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
+
         if ("/registration".equals(path)) {
             RegistrationController registrationController = new RegistrationController();
             registrationController.registration(request, response);
@@ -61,6 +66,22 @@ public class DispatcherServlet extends HttpServlet {
         if ("/products".equals(path)) {
             ShowProductsClientController showProductsClientController = new ShowProductsClientController();
             showProductsClientController.showAProducts(request, response);
+        }
+        if (request.getParameter("addtobasket") != null) {
+            BasketController basketController = new BasketController();
+            basketController.addOrderByBasket(request, response);
+        }
+        if (request.getParameter("makeOrder") != null) {
+            OrderController orderController = new OrderController();
+            orderController.makeOrder(request, response);
+        }
+        if (request.getParameter("gotobasket") != null) {
+            AllOrdersController allOrdersController = new AllOrdersController();
+            allOrdersController.allOrders(request, response);
+        }
+        if (request.getParameter("cleanBasket") != null) {
+            CleanBasketController cleanBasketController = new CleanBasketController();
+            cleanBasketController.cleanBasket(request, response);
         }
     }
 }

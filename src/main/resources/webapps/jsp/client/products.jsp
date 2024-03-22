@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Management</title>
+    <title>Orders</title>
     <style>
         body, html {
             margin: 0;
@@ -93,10 +93,10 @@
 </head>
 <body>
 <div class="product-container">
-    <h3>Admin Panel: Products</h3>
+    <h3>Client Panel: Products</h3>
     <form method="post" action="http://localhost:8080/GSProject/products">
         <div>
-            <button type="submit" class="create-account">Show All Products</button>
+            <button type="submit" class="show-products">Show All Products</button>
         </div>
     </form>
     <c:if test="${not empty products}">
@@ -110,16 +110,21 @@
                         <p>Price: ${product.price}</p>
                         <p>Quantity: ${product.quantity}</p>
                         <form class="add-to-cart-form" method="post" action="/add-to-cart">
-                            <input type="hidden" name="goodId" value="${product.id}">
+                            <input type="hidden" name="productId" value="${product.id}">
                             <label for="count">Count:</label>
                             <input type="number" id="count" name="count" min="1" value="1">
-                            <button type="submit" class="add-to-cart-btn">В корзину</button>
+                            <button type="submit" class="addtobasket">В корзину</button>
                         </form>
                     </div>
                 </c:forEach>
             </div>
         </div>
     </c:if>
+</div>
+<div class="cart-link">
+    <form action="/cart">
+        <button type="submit" class="gotobasket">Перейти в корзину</button>
+    </form>
 </div>
 </body>
 </html>
