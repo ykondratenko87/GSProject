@@ -12,12 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class DispatcherServlet extends HttpServlet {
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
-
         if ("/registration".equals(path)) {
             RegistrationController registrationController = new RegistrationController();
             registrationController.registration(request, response);
@@ -38,7 +42,6 @@ public class DispatcherServlet extends HttpServlet {
             SearchProductController searchProductController = new SearchProductController();
             searchProductController.searchProduct(request, response);
         }
-
         if ("/editproducts".equals(path)) {
             ShowAllProductsController showAllProductsController = new ShowAllProductsController();
             showAllProductsController.showAllProducts(request, response);
@@ -67,21 +70,37 @@ public class DispatcherServlet extends HttpServlet {
             ShowProductsClientController showProductsClientController = new ShowProductsClientController();
             showProductsClientController.showAProducts(request, response);
         }
-        if (request.getParameter("addtobasket") != null) {
+        if ("/products".equals(path) && request.getParameter("addProductByBasket") != null) {
             BasketController basketController = new BasketController();
-            basketController.addOrderByBasket(request, response);
+            try {
+                basketController.addOrderByBasket(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        if (request.getParameter("makeOrder") != null) {
-            OrderController orderController = new OrderController();
-            orderController.makeOrder(request, response);
-        }
-        if (request.getParameter("gotobasket") != null) {
+        if ("/basket".equals(path) && request.getParameter("basket") != null) {
             AllOrdersController allOrdersController = new AllOrdersController();
-            allOrdersController.allOrders(request, response);
+            try {
+                allOrdersController.allOrders(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        if (request.getParameter("cleanBasket") != null) {
+        if ("/basket".equals(path) && request.getParameter("makeOrder") != null) {
+            OrderController orderController = new OrderController();
+            try {
+                orderController.makeOrder(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if ("/basket".equals(path) && request.getParameter("cleanBasket") != null) {
             CleanBasketController cleanBasketController = new CleanBasketController();
-            cleanBasketController.cleanBasket(request, response);
+            try {
+                cleanBasketController.cleanBasket(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

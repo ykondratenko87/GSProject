@@ -2,6 +2,7 @@ package by.tms.gsproject.repository.product;
 
 import by.tms.gsproject.entity.product.Product;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface ProductRepository {
 
     Product findByName(String productName);
 
-    List<Product> getProductsByIds(List<Long> ids);
+    List<Product> getProductsByIds(List<Long> ids) throws SQLException;
 }

@@ -12,41 +12,40 @@ public class OrderJDBCRepository implements OrderRepository {
     JDBCConnection connection = new JDBCConnection();
 
     @Override
-    public Order add(Long userId) {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementMaxId = con.prepareStatement("SELECT max(id) from gsproject.orders"); PreparedStatement preparedStatement = con.prepareStatement(" insert into gsproject.orders(id, userId, cost, status) values (?,?,?,?)");) {
-            ResultSet resultSet = preparedStatementMaxId.executeQuery();
-            resultSet.next();
-            long maxId = resultSet.getLong(1);
-            maxId++;
-            String status = "Создан";
-            preparedStatement.setLong(1, maxId);
-            preparedStatement.setLong(2, userId);
-            preparedStatement.setNull(3, java.sql.Types.NULL);
-            preparedStatement.setString(4, status);
-            preparedStatement.executeUpdate();
-            Order order = new Order(maxId, userId, status);
-            return order;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Ошибка при добавлении заказа");
-        }
+    public Order add(Long userId, long productPrice) throws SQLException {
+        Connection con = connection.getConnection();
+        PreparedStatement preparedStatementMaxId = con.prepareStatement("SELECT max(id) from gsproject.orders");
+        ResultSet resultSet = preparedStatementMaxId.executeQuery();
+        resultSet.next();
+        long maxId = resultSet.getLong(1);
+        maxId++;
+        PreparedStatement preparedStatement = con.prepareStatement(" insert into gsproject.orders(id, userId, cost, status)  " + "values (?,?,?,?)");
+        String status = "ORDERING";
+        preparedStatement.setLong(1, maxId);
+        preparedStatement.setLong(2, userId);
+        preparedStatement.setLong(3, productPrice);
+        preparedStatement.setString(4, status);
+        preparedStatement.executeUpdate();
+        return new Order(maxId, userId, productPrice, status);
     }
 
     @Override
-    public Order getOrderByUserid(Long userId) {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.orders WHERE userid = ?");) {
-            preparedStatement.setLong(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Order order = null;
-            while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String status = resultSet.getString("status");
-                order = new Order(id, userId, status);
-            }
-            return order;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Ошибка при получении заказа по ID пользователя");
+    public Order getOrderByUserid(Long userId) throws SQLException {
+        Connection con = connection.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.orders WHERE userid = ?");
+        preparedStatement.setLong(1, userId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Order order = new Order();
+        while (resultSet.next()) {
+            Long id = resultSet.getLong("id");
+            Long userid = resultSet.getLong("userid");
+            Long productPrice = resultSet.getLong("cost");
+            String status = resultSet.getString("status");
+            order.setId(id);
+            order.setUserId(userid);
+            order.setProductPrice(productPrice);
+            order.setStatus(status);
         }
+        return order;
     }
 }

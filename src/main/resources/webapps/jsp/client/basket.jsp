@@ -52,9 +52,22 @@
             }
         }
 
+        .product-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-card {
+            width: 200px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
         .product-card h4 {
             margin: 0;
-            font-size: 16px;
         }
 
         .product-card p {
@@ -65,14 +78,25 @@
     </style>
 </head>
 <body>
-${orders}
-<div>
+<div class="registration-cssave">
     <form method="post" action="http://localhost:8080/GSProject/basket">
         <div>
             <h2>Корзина товаров</h2>
+            <div class="product-cards">
+                <c:forEach var="product" items="${orders.products}">
+                    <div class="product-card">
+                        <h4>${product.name}</h4>
+                        <p>${product.type}</p>
+                        <p>Цена: ${product.price}</p>
+                    </div>
+                </c:forEach>
+            </div>
+            <div>
+                <h2>Статус заказа:</h2>
+                <p>${orderStatus}</p>
+            </div>
             <button type="submit" name="makeOrder">Оформить</button>
             <button type="submit" name="cleanBasket">Удалить все</button>
-
         </div>
     </form>
 </div>

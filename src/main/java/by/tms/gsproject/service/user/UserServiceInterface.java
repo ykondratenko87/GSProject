@@ -13,8 +13,6 @@ public interface UserServiceInterface {
 
     void deleteUserById(Long userId);
 
-    void updateUser(UserRequest userRequest);
-
     UserResponse getUserByLogin(String userLogin);
 
     UserResponse getUserById(long userId);

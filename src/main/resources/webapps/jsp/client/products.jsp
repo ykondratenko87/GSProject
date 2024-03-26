@@ -2,7 +2,6 @@
 <%@ page import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="by.tms.gsproject.entity.*" %>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -77,7 +76,7 @@
             color: #555;
         }
 
-        .add-to-cart-btn {
+        .addtobasket {
             background-color: #3f93ff;
             color: white;
             border: none;
@@ -86,44 +85,48 @@
             cursor: pointer;
         }
 
-        .add-to-cart-form {
+        .addtobasket-form {
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
-<div class="product-container">
-    <h3>Client Panel: Products</h3>
+<div>
     <form method="post" action="http://localhost:8080/GSProject/products">
+
         <div>
-            <button type="submit" class="show-products">Show All Products</button>
-        </div>
-    </form>
-    <c:if test="${not empty products}">
-        <div class="all-products">
-            <h3>All Products</h3>
-            <div class="product-grid">
-                <c:forEach var="product" items="${products}">
-                    <div class="product-card">
-                        <h4>ID: ${product.id}</h4>
-                        <h4>${product.name}</h4>
-                        <p>Price: ${product.price}</p>
-                        <p>Quantity: ${product.quantity}</p>
-                        <form class="add-to-cart-form" method="post" action="/add-to-cart">
-                            <input type="hidden" name="productId" value="${product.id}">
-                            <label for="count">Count:</label>
-                            <input type="number" id="count" name="count" min="1" value="1">
-                            <button type="submit" class="addtobasket">В корзину</button>
-                        </form>
+            <%--@declare id="productid"--%><%--@declare id="count"--%><h2>Товары</h2>
+            <ul>
+                <c:if test="${not empty products}">
+                    <div class="all-products">
+                        <h3>All Products</h3>
+                        <div class="product-grid">
+                            <c:forEach var="product" items="${products}">
+                                <div class="product-card">
+                                    <h4>ID: ${product.id}</h4>
+                                    <h4>${product.name}</h4>
+                                    <p>Price: ${product.price}</p>
+                                    <p>Quantity: ${product.quantity}</p>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </div>
-                </c:forEach>
-            </div>
+                </c:if>
+            </ul>
+            <button type="submit" class="show-products">Show All Products</button>
+
+            <h2>Добавить в корзину</h2>
+            <label for="productId">ID товара:</label><br>
+            <input type="text" name="idProduct" placeholder="id"><br>
+            <label for="count">Количество:</label><br>
+            <input type="text" name="ProductCount" placeholder="count"><br><br>
+            <button type="submit" name="addProductByBasket">Добавить в корзину</button>
         </div>
-    </c:if>
-</div>
-<div class="cart-link">
-    <form action="/cart">
-        <button type="submit" class="gotobasket">Перейти в корзину</button>
+        <div class="container">
+            <button type="submit" name="basket" formaction="http://localhost:8080/GSProject/basket" formmethod="post"
+                    class="btn btn-primary btn-cart">Корзина
+            </button>
+        </div>
     </form>
 </div>
 </body>

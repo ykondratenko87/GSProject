@@ -2,8 +2,10 @@ package by.tms.gsproject.repository.order;
 
 import by.tms.gsproject.entity.order.Order;
 
-public interface OrderRepository {
-    Order add(Long userId);
+import java.sql.SQLException;
 
-    Order getOrderByUserid(Long userId);
+public interface OrderRepository {
+    Order add(Long userId, long productPrice) throws SQLException;
+
+    Order getOrderByUserid(Long userId) throws SQLException;
 }

@@ -3,10 +3,7 @@ package by.tms.gsproject.repository.product;
 import by.tms.gsproject.config.JDBCConnection;
 import by.tms.gsproject.entity.product.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -135,8 +132,23 @@ public class ProductJDBCRepository implements ProductRepository {
         }
     }
 
-    @Override
-    public List<Product> getProductsByIds(List<Long> ids) {
-        return null;
+    public List<Product> getProductsByIds(List<Long> ids) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        JDBCConnection connection = new JDBCConnection();
+        Connection con = connection.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.products WHERE id = ANY(?)");
+        Array array = con.createArrayOf("NUMERIC", ids.toArray());
+        preparedStatement.setArray(1, array);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            long id = resultSet.getLong("id");
+            String name = resultSet.getString("name");
+            String type = resultSet.getString("type");
+            double price = resultSet.getInt("price");
+            int quantity = resultSet.getInt("quantity");
+            Product product = new Product(Long.valueOf(id), type, name, price, quantity);
+            products.add(product);
+        }
+        return products;
     }
 }

@@ -8,6 +8,7 @@ public class OrderMapper {
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setId(order.getId());
         orderResponse.setUserId(order.getUserId());
+        orderResponse.setProductPrice(order.getProductPrice());
         orderResponse.setStatus(order.getStatus());
         return orderResponse;
     }

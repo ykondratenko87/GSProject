@@ -13,51 +13,47 @@ import by.tms.gsproject.repository.order.OrderJDBCRepository;
 import by.tms.gsproject.repository.order.OrderRepository;
 import by.tms.gsproject.service.product.ProductService;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public class OrderService implements OrderServiceInterface {
-    @Override
-    public OrderResponse addUserByOrder(Long userId) {
+public class OrderService {
+    public OrderResponse addUserByOrder(Long userId, Long productPrice) throws SQLException {
         OrderRepository repository = new OrderJDBCRepository();
         OrderMapper orderMapper = new OrderMapper();
-        Order order = repository.add(userId);
+        Order order = repository.add(userId, productPrice);
         return orderMapper.toResponse(order);
     }
 
-    @Override
-    public BasketResponse addOrderByBasket(Long userId, Long productId, Long count) {
+    public BasketResponse addOrderByBasket(Long userId, Long productId, Long productPrice, Long count) throws SQLException {
         OrderRepository orderRepository = new OrderJDBCRepository();
         Order orderByUserid = orderRepository.getOrderByUserid(userId);
         Long id = 0L;
-        if (orderByUserid.getUserId() == userId && orderByUserid.getUserId() != null && orderByUserid.getStatus().equals("Создан")) {
+        if (orderByUserid.getUserId() == userId && orderByUserid.getUserId() != null && orderByUserid.getStatus().equals("ORDERING")) {
             id = orderByUserid.getId();
         } else {
-            OrderResponse orderResponse = addUserByOrder(userId);
+            OrderResponse orderResponse = addUserByOrder(userId, productPrice);
             id = orderResponse.getId();
         }
         BasketRepository repository = new BasketJDBCRepository();
         if (id == 0 || productId == 0 || count == 0) {
-            throw new RuntimeException("Неверные значения в полях");
+            throw new RuntimeException("Не правильные значения в полях");
         }
         Basket basket = repository.add(id, productId, count);
-
         BasketMapper basketMapper = new BasketMapper();
         return basketMapper.toResponse(basket);
     }
 
-    @Override
-    public void makeOrder(Long userId) {
+    public void makeOrder(Long userId) throws SQLException {
         BasketRepository repository = new BasketJDBCRepository();
         repository.makeOrder(userId);
     }
 
-    @Override
-    public OrderResponse allOrders(Long userId) {
+    public OrderResponse allOrders(Long userId) throws SQLException {
         OrderRepository orderJDBCRepository = new OrderJDBCRepository();
         Order orderByUserid = orderJDBCRepository.getOrderByUserid(userId);
         BasketRepository basketRepository = new BasketJDBCRepository();
         Long getOrderId = 0L;
-        if (orderByUserid.getStatus().equals("Создан")) {
+        if (orderByUserid.getStatus().equals("ORDERING")) {
             getOrderId = orderByUserid.getId();
         }
         if (getOrderId == null) {
@@ -71,5 +67,16 @@ public class OrderService implements OrderServiceInterface {
         OrderResponse orderResponse = orderMapper.toResponse(orderByUserid);
         orderResponse.setProducts(productsByIds);
         return orderResponse;
+    }
+
+    public void cleanBasket(Long userId) throws SQLException {
+        OrderRepository orderJDBCRepository = new OrderJDBCRepository();
+        Order orderByUserid = orderJDBCRepository.getOrderByUserid(userId);
+        BasketRepository basketRepository = new BasketJDBCRepository();
+        Long getOrderId = orderByUserid.getId();
+        List<Basket> basketsByOrderId = basketRepository.getBasketsByOrderId(getOrderId);
+        List<Long> listProductId = basketsByOrderId.stream().map(basket -> basket.getProductId()).toList();
+        List<Long> listCount = basketsByOrderId.stream().map(Basket::getCount).toList();
+        basketRepository.cleanBasket(getOrderId, listProductId, listCount);
     }
 }

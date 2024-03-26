@@ -9,33 +9,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class AllOrdersController {
-    public void allOrders(HttpServletRequest req, HttpServletResponse resp) {
+    public void allOrders(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         HttpSession session = req.getSession(false);
         if (session != null) {
-            User user = (User) session.getAttribute("user");
+            User user = (User) session.getAttribute("authenticatedUser");
             if (user != null) {
                 OrderService orderService = new OrderService();
                 OrderResponse orderResponse = orderService.allOrders(user.getId());
                 session.setAttribute("orders", orderResponse);
-                try {
-                    req.getRequestDispatcher("/jsp/client/products.jsp").forward(req, resp);
-                } catch (ServletException | IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    resp.sendRedirect(req.getContextPath() + "/login.jsp");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            try {
-                resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            } catch (IOException e) {
-                e.printStackTrace();
+                session.setAttribute("orderStatus", orderResponse.getStatus());
+                req.getRequestDispatcher("/jsp/client/basket.jsp").forward(req, resp);
             }
         }
     }
