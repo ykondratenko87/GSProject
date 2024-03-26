@@ -5,6 +5,7 @@ import by.tms.gsproject.entity.product.Product;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ProductFileRepository implements ProductRepository, Serializable {
     private static final String FILE_PATH = "d:\\Java\\C72-JavaProjects\\GSProject\\src\\main\\resources\\files\\product.ser";
@@ -72,6 +73,11 @@ public class ProductFileRepository implements ProductRepository, Serializable {
                 return product;
             }
         }
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductsByIds(List<Long> ids) {
         return null;
     }
 }

@@ -1,9 +1,9 @@
-package by.tms.gsproject.entity.basket;
+package by.tms.gsproject.api.basket;
 
 import lombok.Data;
 
 @Data
-public class Basket {
+public class BasketResponse {
     private Long id;
     private Long productId;
     private Long orderId;

@@ -48,13 +48,6 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public void updateUser(UserRequest userRequest) {
-        UserMapper userMapper = new UserMapper();
-        User user = userMapper.toEntity(userRequest);
-        userRepository.update(user);
-    }
-
-    @Override
     public UserResponse getUserByLogin(String userLogin) {
         UserMapper userMapper = new UserMapper();
         User user = userRepository.findByLogin(userLogin);

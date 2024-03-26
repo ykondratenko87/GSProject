@@ -6,6 +6,16 @@ import lombok.Data;
 public class Order {
     private Long id;
     private Long userId;
-    private Long cost;
-    private OrderStatus status;
+    private long productPrice;
+    private String status;
+
+    public Order() {
+    }
+
+    public Order(Long id, Long userId, long productPrice, String status) {
+        this.id = id;
+        this.userId = userId;
+        this.productPrice = productPrice;
+        this.status = status;
+    }
 }

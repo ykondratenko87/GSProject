@@ -20,6 +20,10 @@
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>/dispatcherServlet</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>Filter</filter-name>
         <filter-class>by.tms.gsproject.filter.Filter</filter-class>

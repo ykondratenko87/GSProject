@@ -8,7 +8,9 @@ import by.tms.gsproject.repository.product.ProductJDBCRepository;
 import by.tms.gsproject.repository.product.ProductRepository;
 import by.tms.gsproject.repository.product.ProductFileRepository;
 
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 public class ProductService implements ProductServiceInterface {
     private final ProductRepository productRepository;
@@ -54,6 +56,27 @@ public class ProductService implements ProductServiceInterface {
             return productMapper.toResponse(product);
         } else {
             return null;
+        }
+    }
+
+    public List<ProductResponse> getProductsByIds(List<Long> ids) throws SQLException {
+        ProductRepository repository = new ProductJDBCRepository();
+        List<Product> products = repository.getProductsByIds(ids);
+        if (products.isEmpty()) {
+            throw new RuntimeException("Товары не добавлены");
+        }
+        ProductMapper productMapper = new ProductMapper();
+        List<ProductResponse> productResponses = products.stream().map(product -> productMapper.toResponse(product)).toList();
+        return productResponses;
+    }
+
+    public double getProductPriceById(long productId) {
+        ProductRepository repository = new ProductJDBCRepository();
+        Product product = repository.findById(productId);
+        if (product != null) {
+            return product.getPrice();
+        } else {
+            throw new RuntimeException("Товар с указанным ID не найден");
         }
     }
 }
