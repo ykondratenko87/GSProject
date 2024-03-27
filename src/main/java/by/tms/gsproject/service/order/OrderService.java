@@ -79,4 +79,9 @@ public class OrderService {
         List<Long> listCount = basketsByOrderId.stream().map(Basket::getCount).toList();
         basketRepository.cleanBasket(getOrderId, listProductId, listCount);
     }
+
+    public void clean() {
+        BasketRepository basketRepository = new BasketJDBCRepository();
+        basketRepository.clean();
+    }
 }

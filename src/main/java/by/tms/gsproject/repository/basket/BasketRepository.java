@@ -13,4 +13,6 @@ public interface BasketRepository {
     List<Basket> getBasketsByOrderId(Long orderId) throws SQLException;
 
     void cleanBasket(Long orderId, List<Long> productId, List<Long> count) throws SQLException;
+
+    void clean();
 }
