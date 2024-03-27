@@ -6,8 +6,6 @@ import by.tms.gsproject.entity.basket.Basket;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class BasketJDBCRepository implements BasketRepository {
     JDBCConnection connection = new JDBCConnection();
@@ -42,7 +40,6 @@ public class BasketJDBCRepository implements BasketRepository {
         basket.setOrderId(orderId);
         basket.setProductId(productId);
         basket.setCount(count);
-        timerDeleteOrdersByBasket(orderId, count, productId);
         return basket;
     }
 
@@ -75,54 +72,6 @@ public class BasketJDBCRepository implements BasketRepository {
             baskets.add(basket);
         }
         return baskets;
-    }
-
-    public void timerDeleteOrdersByBasket(Long orderId, Long count, Long productId) throws SQLException {
-        final String tableDeleteBasket = "DELETE FROM gsproject.baskets where orderid = ?";
-        final String tableDeleteOrders = "DELETE FROM gsproject.orders where id = ?";
-        final String selectCountProduct = "UPDATE gsproject.products SET quantity = ? where id = ?";
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatementStatus = con.prepareStatement("select status from gsproject.orders WHERE id = ?");
-        preparedStatementStatus.setLong(1, orderId);
-        ResultSet status = preparedStatementStatus.executeQuery();
-        status.next();
-        String statusString = status.getString(1);
-        PreparedStatement quantity = con.prepareStatement("SELECT quantity from gsproject.products WHERE id = ?");
-        quantity.setLong(1, productId);
-        ResultSet executeQuery = quantity.executeQuery();
-        executeQuery.next();
-        long quantityLong = executeQuery.getLong(1);
-        PreparedStatement preparedStatementProduct = con.prepareStatement(selectCountProduct);
-        preparedStatementProduct.setLong(1, quantityLong + count);
-        preparedStatementProduct.setLong(2, productId);
-        PreparedStatement preparedStatementBasket = con.prepareStatement(tableDeleteBasket);
-        preparedStatementBasket.setLong(1, orderId);
-        PreparedStatement preparedStatementOrders = con.prepareStatement(tableDeleteOrders);
-        preparedStatementOrders.setLong(1, orderId);
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                if (statusString.equals("ORDERING") && statusString != null) {
-                    try {
-                        preparedStatementProduct.executeUpdate();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        preparedStatementBasket.executeUpdate();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        preparedStatementOrders.executeUpdate();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        };
-        long time = 7200000L;
-        timer.schedule(task, time);
     }
 
     @Override
@@ -167,6 +116,18 @@ public class BasketJDBCRepository implements BasketRepository {
             preparedStatementOrders.executeUpdate();
         } else {
             throw new RuntimeException("Корзина пустая");
+        }
+    }
+
+    @Override
+    public void clean() {
+        try (Connection con = connection.getConnection();
+             PreparedStatement preparedStatementBasket = con.prepareStatement("DELETE FROM gsproject.baskets");
+             PreparedStatement preparedStatementOrders = con.prepareStatement("DELETE FROM gsproject.orders WHERE status = 'ORDERING'")) {
+            preparedStatementBasket.executeUpdate();
+            preparedStatementOrders.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
