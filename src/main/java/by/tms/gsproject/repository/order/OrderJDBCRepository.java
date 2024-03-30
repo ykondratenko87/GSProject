@@ -32,7 +32,7 @@ public class OrderJDBCRepository implements OrderRepository {
     @Override
     public Order getOrderByUserid(Long userId) throws SQLException {
         Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.orders WHERE userid = ?");
+        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.orders WHERE userid = ? AND status = 'ORDERING'");
         preparedStatement.setLong(1, userId);
         ResultSet resultSet = preparedStatement.executeQuery();
         Order order = new Order();
@@ -47,5 +47,26 @@ public class OrderJDBCRepository implements OrderRepository {
             order.setStatus(status);
         }
         return order;
+    }
+
+    public Long getCostByOrderId(Long orderId) throws SQLException {
+        Connection con = connection.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement("SELECT cost FROM gsproject.orders WHERE id = ?");
+        preparedStatement.setLong(1, orderId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Long orderCost = null;
+        if (resultSet.next()) {
+            orderCost = resultSet.getLong("cost");
+        }
+        return orderCost;
+    }
+
+    @Override
+    public void updateOrderCost(Long orderId, Long newCost) throws SQLException {
+        Connection con = connection.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement("UPDATE gsproject.orders SET cost = ? WHERE id = ?");
+        preparedStatement.setLong(1, newCost);
+        preparedStatement.setLong(2, orderId);
+        preparedStatement.executeUpdate();
     }
 }

@@ -26,19 +26,19 @@ public class OrderService {
 
     public BasketResponse addOrderByBasket(Long userId, Long productId, Long productPrice, Long count) throws SQLException {
         OrderRepository orderRepository = new OrderJDBCRepository();
-        Order orderByUserid = orderRepository.getOrderByUserid(userId);
-        Long id = 0L;
-        if (orderByUserid.getUserId() == userId && orderByUserid.getUserId() != null && orderByUserid.getStatus().equals("ORDERING")) {
-            id = orderByUserid.getId();
+        Order orderByUserId = orderRepository.getOrderByUserid(userId);
+        if (orderByUserId.getId() == null || !orderByUserId.getStatus().equals("ORDERING")) {
+            addUserByOrder(userId, productPrice * count);
+            orderByUserId = orderRepository.getOrderByUserid(userId);
         } else {
-            OrderResponse orderResponse = addUserByOrder(userId, productPrice);
-            id = orderResponse.getId();
+            orderRepository.updateOrderCost(orderByUserId.getId(), orderByUserId.getProductPrice() + productPrice * count);
         }
+        Long orderId = orderByUserId.getId();
         BasketRepository repository = new BasketJDBCRepository();
-        if (id == 0 || productId == 0 || count == 0) {
-            throw new RuntimeException("Не правильные значения в полях");
+        if (orderId == null || productId == 0 || count == 0) {
+            throw new RuntimeException("Неправильные значения в полях");
         }
-        Basket basket = repository.add(id, productId, count);
+        Basket basket = repository.add(orderId, productId, count);
         BasketMapper basketMapper = new BasketMapper();
         return basketMapper.toResponse(basket);
     }
@@ -83,5 +83,10 @@ public class OrderService {
     public void clean() {
         BasketRepository basketRepository = new BasketJDBCRepository();
         basketRepository.clean();
+    }
+
+    public Long getOrderCostById(Long orderId) throws SQLException {
+        OrderRepository repository = new OrderJDBCRepository();
+        return repository.getCostByOrderId(orderId);
     }
 }

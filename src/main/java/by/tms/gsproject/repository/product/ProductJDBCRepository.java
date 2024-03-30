@@ -95,7 +95,7 @@ public class ProductJDBCRepository implements ProductRepository {
     @Override
     public Collection<Product> allProducts() {
         Collection<Product> allProducts = new ArrayList<>();
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products"); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products ORDER BY id"); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 long id = resultSet.getLong(1);
                 String name = resultSet.getString(2);
