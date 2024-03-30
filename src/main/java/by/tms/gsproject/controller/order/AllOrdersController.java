@@ -21,6 +21,9 @@ public class AllOrdersController {
                 OrderResponse orderResponse = orderService.allOrders(user.getId());
                 session.setAttribute("orders", orderResponse);
                 session.setAttribute("orderStatus", orderResponse.getStatus());
+                Long orderCost = orderService.getOrderCostById(orderResponse.getId());
+                req.setAttribute("orderCost", orderCost);
+                req.setAttribute("orderId", orderResponse.getId());
                 req.getRequestDispatcher("/jsp/client/basket.jsp").forward(req, resp);
             }
         }

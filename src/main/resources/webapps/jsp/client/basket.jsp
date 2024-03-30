@@ -95,6 +95,10 @@
                 <h2>Статус заказа:</h2>
                 <p>${orderStatus}</p>
             </div>
+            <div>
+                <h2>Стоимость заказа:</h2>
+                <p>${orderCost}</p>
+            </div>
             <button type="submit" name="makeOrder">Оформить</button>
             <button type="submit" name="cleanBasket">Удалить все</button>
         </div>

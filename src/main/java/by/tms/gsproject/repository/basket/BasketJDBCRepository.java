@@ -31,10 +31,6 @@ public class BasketJDBCRepository implements BasketRepository {
         if (quantityLong < 1) {
             throw new RuntimeException("Товар закончился");
         }
-        PreparedStatement preparedStatementCount = con.prepareStatement("UPDATE gsproject.products SET quantity = ? where id = ?");
-        preparedStatementCount.setLong(1, quantityLong - count);
-        preparedStatementCount.setLong(2, productId);
-        preparedStatementCount.executeUpdate();
         Basket basket = new Basket();
         basket.setId(maxId);
         basket.setOrderId(orderId);
@@ -46,10 +42,25 @@ public class BasketJDBCRepository implements BasketRepository {
     @Override
     public void makeOrder(Long userId) throws SQLException {
         Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("UPDATE gsproject.orders SET status = ? where userid = ?");
-        preparedStatement.setString(1, "COMPLETED");
-        preparedStatement.setLong(2, userId);
-        preparedStatement.executeUpdate();
+        PreparedStatement updateOrderStatusStatement = con.prepareStatement("UPDATE gsproject.orders SET status = ? WHERE userid = ?");
+        updateOrderStatusStatement.setString(1, "COMPLETED");
+        updateOrderStatusStatement.setLong(2, userId);
+        updateOrderStatusStatement.executeUpdate();
+
+        // Получаем список товаров и их количество для конкретного заказа
+        PreparedStatement selectProductsAndQuantitiesStatement = con.prepareStatement("SELECT productid, count FROM gsproject.baskets WHERE orderid IN (SELECT id FROM gsproject.orders WHERE userid = ?)");
+        selectProductsAndQuantitiesStatement.setLong(1, userId);
+        ResultSet resultSet = selectProductsAndQuantitiesStatement.executeQuery();
+
+        // Обновляем количество товаров на складе
+        PreparedStatement updateProductQuantitiesStatement = con.prepareStatement("UPDATE gsproject.products SET quantity = quantity - ? WHERE id = ?");
+        while (resultSet.next()) {
+            long productId = resultSet.getLong("productid");
+            long quantity = resultSet.getLong("count");
+            updateProductQuantitiesStatement.setLong(1, quantity);
+            updateProductQuantitiesStatement.setLong(2, productId);
+            updateProductQuantitiesStatement.executeUpdate();
+        }
     }
 
     @Override
@@ -78,7 +89,6 @@ public class BasketJDBCRepository implements BasketRepository {
     public void cleanBasket(Long orderId, List<Long> productId, List<Long> count) throws SQLException {
         final String tableDeleteBasket = "DELETE FROM gsproject.baskets where orderid = ?";
         final String tableDeleteOrders = "DELETE FROM gsproject.orders where id = ?";
-        final String selectCountProduct = "UPDATE gsproject.products SET quantity = ? where id = ?";
         Connection con = connection.getConnection();
         PreparedStatement preparedStatementStatus = con.prepareStatement("select status from gsproject.orders WHERE id = ?");
         preparedStatementStatus.setLong(1, orderId);
@@ -94,24 +104,11 @@ public class BasketJDBCRepository implements BasketRepository {
             Integer quantity = resultSet.getInt("quantity");
             quantityList.add(quantity);
         }
-        PreparedStatement preparedStatementProduct = con.prepareStatement(selectCountProduct);
-        for (int i = 0; i < quantityList.size(); i++) {
-            Integer value = quantityList.get(i);
-            for (int j = 0; j < count.size(); j++) {
-                Long integer = count.get(j);
-                for (int k = 0; k < productId.size(); k++) {
-                    Long aLong = productId.get(k);
-                    preparedStatementProduct.setLong(1, value + integer);
-                    preparedStatementProduct.setLong(2, aLong);
-                }
-            }
-        }
         PreparedStatement preparedStatementBasket = con.prepareStatement(tableDeleteBasket);
         preparedStatementBasket.setLong(1, orderId);
         PreparedStatement preparedStatementOrders = con.prepareStatement(tableDeleteOrders);
         preparedStatementOrders.setLong(1, orderId);
         if (statusString.equals("ORDERING") && statusString != null) {
-            preparedStatementProduct.executeUpdate();
             preparedStatementBasket.executeUpdate();
             preparedStatementOrders.executeUpdate();
         } else {
@@ -121,9 +118,7 @@ public class BasketJDBCRepository implements BasketRepository {
 
     @Override
     public void clean() {
-        try (Connection con = connection.getConnection();
-             PreparedStatement preparedStatementBasket = con.prepareStatement("DELETE FROM gsproject.baskets");
-             PreparedStatement preparedStatementOrders = con.prepareStatement("DELETE FROM gsproject.orders WHERE status = 'ORDERING'")) {
+        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementBasket = con.prepareStatement("DELETE FROM gsproject.baskets"); PreparedStatement preparedStatementOrders = con.prepareStatement("DELETE FROM gsproject.orders WHERE status = 'ORDERING'")) {
             preparedStatementBasket.executeUpdate();
             preparedStatementOrders.executeUpdate();
         } catch (SQLException e) {
