@@ -26,7 +26,7 @@ public class RegistrationController {
         userRequest.setPassword(password);
         try {
             userService.register(userRequest);
-            req.getRequestDispatcher("/jsp/client/client.jsp").forward(req, resp);
+            req.getRequestDispatcher("/jsp/auth/login.jsp").forward(req, resp);
         } catch (IllegalArgumentException e) {
             req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
