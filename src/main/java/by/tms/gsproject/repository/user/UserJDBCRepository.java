@@ -8,13 +8,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static by.tms.gsproject.constants.SQLQueries.*;
+
 public class UserJDBCRepository implements UserRepository {
-    private final String ADD_USER = "insert into gsproject.users (id, \"name\",surname, login, password, role) " + "values (?,?,?,?,?,?)";
-    private final String MAX_ID = "select max(id) from gsproject.users";
 
     @Override
     public User add(User user) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users"); PreparedStatement preparedStatementMax = connection.prepareStatement(MAX_ID)) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM gsproject.users"); PreparedStatement preparedStatementMax = connection.prepareStatement(SELECT_MAX_ID)) {
             ResultSet countResult = countStatement.executeQuery();
             countResult.next();
             long userCount = countResult.getLong(1);
@@ -44,7 +44,7 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public void deleteById(Long userId) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM gsproject.users WHERE id = ?")) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
             preparedStatement.setLong(1, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -55,7 +55,7 @@ public class UserJDBCRepository implements UserRepository {
     @Override
     public Collection<User> allUsers() {
         Collection<User> allUsers = new ArrayList<>();
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users"); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 long id = resultSet.getLong(1);
                 String name = resultSet.getString(2);
@@ -75,7 +75,7 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public User getUserById(Long userId) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users WHERE id = ?")) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             preparedStatement.setLong(1, userId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -98,7 +98,7 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public User findByLogin(String userLogin) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users WHERE login = ?")) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_LOGIN)) {
             preparedStatement.setString(1, userLogin);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
