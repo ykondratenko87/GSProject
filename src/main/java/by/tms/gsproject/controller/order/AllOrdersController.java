@@ -18,13 +18,18 @@ public class AllOrdersController {
             User user = (User) session.getAttribute("authenticatedUser");
             if (user != null) {
                 OrderService orderService = new OrderService();
-                OrderResponse orderResponse = orderService.allOrders(user.getId());
-                session.setAttribute("orders", orderResponse);
-                session.setAttribute("orderStatus", orderResponse.getStatus());
-                Long orderCost = orderService.getOrderCostById(orderResponse.getId());
-                req.setAttribute("orderCost", orderCost);
-                req.setAttribute("orderId", orderResponse.getId());
-                req.getRequestDispatcher("/jsp/client/basket.jsp").forward(req, resp);
+                try {
+                    OrderResponse orderResponse = orderService.allOrders(user.getId());
+                    session.setAttribute("orders", orderResponse);
+                    session.setAttribute("orderStatus", orderResponse.getStatus());
+                    Long orderCost = orderService.getOrderCostById(orderResponse.getId());
+                    req.setAttribute("orderCost", orderCost);
+                    req.setAttribute("orderId", orderResponse.getId());
+                    req.getRequestDispatcher("/jsp/client/basket.jsp").forward(req, resp);
+                } catch (RuntimeException e) {
+                    req.setAttribute("error", "Корзина пустая");
+                    req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
+                }
             }
         }
     }
