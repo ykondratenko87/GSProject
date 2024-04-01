@@ -100,7 +100,7 @@
                 <p>${orderCost}</p>
             </div>
             <button type="submit" name="makeOrder">Оформить</button>
-            <button type="submit" name="cleanBasket">Удалить все</button>
+            <button type="submit" name="cleanBasket">Очистить и вернуться к выбору</button>
         </div>
     </form>
 </div>

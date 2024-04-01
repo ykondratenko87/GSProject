@@ -68,6 +68,9 @@ public class OrderService implements OrderServiceInterface {
             throw new RuntimeException("Корзина пустая");
         }
         List<Basket> basketsByOrderId = basketRepository.getBasketsByOrderId(getOrderId);
+        if (basketsByOrderId.isEmpty()) {
+            throw new RuntimeException("Корзина пустая");
+        }
         List<Long> listProductId = basketsByOrderId.stream().map(basket -> basket.getProductId()).toList();
         ProductService productService = new ProductService();
         List<ProductResponse> productsByIds = productService.getProductsByIds(listProductId);
