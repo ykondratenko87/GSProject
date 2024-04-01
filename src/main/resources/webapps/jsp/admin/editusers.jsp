@@ -78,6 +78,26 @@
             background-color: #2a6dbb;
             cursor: pointer;
         }
+
+        .user-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .user-card {
+            width: 300px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-card p {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -101,12 +121,18 @@
     <c:if test="${not empty users}">
         <div class="all-users">
             <h3>All Users</h3>
-            <ul>
+            <div class="user-cards">
                 <c:forEach var="user" items="${users}">
-                    <li>ID: ${user.id}, Name: ${user.name}, Surname: ${user.surname}, Login: ${user.login},
-                        Password: ${user.password}, Role: ${user.role}</li>
+                    <div class="user-card">
+                        <p>ID: ${user.id}</p>
+                        <p>Name: ${user.name}</p>
+                        <p>Surname: ${user.surname}</p>
+                        <p>Login: ${user.login}</p>
+                        <p>Password: ${user.password}</p>
+                        <p>Role: ${user.role}</p>
+                    </div>
                 </c:forEach>
-            </ul>
+            </div>
         </div>
     </c:if>
 </div>

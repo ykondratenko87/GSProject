@@ -80,4 +80,10 @@ public class ProductFileRepository implements ProductRepository, Serializable {
     public List<Product> getProductsByIds(List<Long> ids) {
         return null;
     }
+
+    @Override
+    public long getProductQuantityById(Long productId) {
+        Product product = findById(productId);
+        return product != null ? product.getQuantity() : 0;
+    }
 }

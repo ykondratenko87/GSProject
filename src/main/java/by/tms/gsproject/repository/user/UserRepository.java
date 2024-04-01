@@ -9,8 +9,6 @@ public interface UserRepository {
 
     void deleteById(Long userId);
 
-    User update(User user);
-
     Collection<User> allUsers();
 
     User getUserById(Long userId);

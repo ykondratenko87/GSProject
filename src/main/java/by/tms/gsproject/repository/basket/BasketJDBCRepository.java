@@ -46,13 +46,9 @@ public class BasketJDBCRepository implements BasketRepository {
         updateOrderStatusStatement.setString(1, "COMPLETED");
         updateOrderStatusStatement.setLong(2, userId);
         updateOrderStatusStatement.executeUpdate();
-
-        // Получаем список товаров и их количество для конкретного заказа
         PreparedStatement selectProductsAndQuantitiesStatement = con.prepareStatement("SELECT productid, count FROM gsproject.baskets WHERE orderid IN (SELECT id FROM gsproject.orders WHERE userid = ?)");
         selectProductsAndQuantitiesStatement.setLong(1, userId);
         ResultSet resultSet = selectProductsAndQuantitiesStatement.executeQuery();
-
-        // Обновляем количество товаров на складе
         PreparedStatement updateProductQuantitiesStatement = con.prepareStatement("UPDATE gsproject.products SET quantity = quantity - ? WHERE id = ?");
         while (resultSet.next()) {
             long productId = resultSet.getLong("productid");

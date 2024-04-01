@@ -12,7 +12,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class BasketController {
-    public void addOrderByBasket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+    private final OrderService orderService;
+    private final ProductService productService;
+
+    public BasketController() {
+        this.orderService = new OrderService();
+        this.productService = new ProductService();
+    }
+
+    public void addOrderByBasket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idProduct = req.getParameter("idProduct");
         String productCount = req.getParameter("ProductCount");
         if (idProduct == null || idProduct.isEmpty() || productCount == null || productCount.isEmpty()) {
@@ -20,18 +28,27 @@ public class BasketController {
             return;
         }
         HttpSession session = req.getSession(false);
-        if (session != null) {
-            User user = (User) session.getAttribute("authenticatedUser");
-            if (user != null) {
-                OrderService orderService = new OrderService();
-                ProductService productService = new ProductService();
-                long productPrice = (long) productService.getProductPriceById(Long.valueOf(idProduct));
-                orderService.addOrderByBasket(user.getId(), Long.valueOf(idProduct), productPrice, Long.valueOf(productCount));
-                req.getRequestDispatcher("/jsp/client/products.jsp").forward(req, resp);
-                return;
-            }
+        if (session == null) {
+            req.setAttribute("error", "User not logged in");
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            return;
         }
-        req.setAttribute("error", "User not logged in");
-        req.getRequestDispatcher("/login.jsp").forward(req, resp);
+        User user = (User) session.getAttribute("authenticatedUser");
+        if (user == null) {
+            req.setAttribute("error", "User not logged in");
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            return;
+        }
+        try {
+            long productPrice = (long) productService.getProductPriceById(Long.valueOf(idProduct));
+            orderService.addOrderByBasket(user.getId(), Long.valueOf(idProduct), productPrice, Long.valueOf(productCount));
+            req.getRequestDispatcher("/jsp/client/products.jsp").forward(req, resp);
+        } catch (IllegalArgumentException e) {
+            req.setAttribute("error", e.getMessage());
+            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
+        } catch (SQLException e) {
+            req.setAttribute("error", "An error occurred while processing your request.");
+            req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
+        }
     }
 }

@@ -53,11 +53,6 @@ public class UserJDBCRepository implements UserRepository {
     }
 
     @Override
-    public User update(User user) {
-        return null;
-    }
-
-    @Override
     public Collection<User> allUsers() {
         Collection<User> allUsers = new ArrayList<>();
         try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.users"); ResultSet resultSet = preparedStatement.executeQuery()) {

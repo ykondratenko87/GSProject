@@ -28,7 +28,7 @@ public class RegistrationController {
             userService.register(userRequest);
             req.getRequestDispatcher("/jsp/client/client.jsp").forward(req, resp);
         } catch (IllegalArgumentException e) {
-            req.setAttribute("error", "Такой пользователь уже существует!");
+            req.setAttribute("error", e.getMessage());
             req.getRequestDispatcher("/jsp/exception/error.jsp").forward(req, resp);
         }
     }

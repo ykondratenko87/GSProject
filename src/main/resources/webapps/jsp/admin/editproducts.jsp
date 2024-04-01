@@ -78,6 +78,22 @@
             background-color: #2a6dbb;
             cursor: pointer;
         }
+
+        .product-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .product-card {
+            width: 300px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -106,12 +122,17 @@
     <c:if test="${not empty products}">
         <div class="all-products">
             <h3>All Products</h3>
-            <ul>
+            <div class="product-cards">
                 <c:forEach var="product" items="${products}">
-                    <li>ID: ${product.id}, Name: ${product.name}, Type: ${product.type}, Price: ${product.price},
-                        Quantity: ${product.quantity}</li>
+                    <div class="product-card">
+                        <p>ID: ${product.id}</p>
+                        <p>Name: ${product.name}</p>
+                        <p>Type: ${product.type}</p>
+                        <p>Price: ${product.price}</p>
+                        <p>Quantity: ${product.quantity}</p>
+                    </div>
                 </c:forEach>
-            </ul>
+            </div>
         </div>
     </c:if>
 </div>

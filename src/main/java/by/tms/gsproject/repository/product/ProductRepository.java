@@ -18,4 +18,6 @@ public interface ProductRepository {
     Product findByName(String productName);
 
     List<Product> getProductsByIds(List<Long> ids) throws SQLException;
+
+    long getProductQuantityById(Long productId) throws SQLException;
 }

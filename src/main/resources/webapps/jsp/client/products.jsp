@@ -75,19 +75,6 @@
             font-size: 14px;
             color: #555;
         }
-
-        .addtobasket {
-            background-color: #3f93ff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .addtobasket-form {
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -113,8 +100,7 @@
                     </div>
                 </c:if>
             </ul>
-            <button type="submit" class="show-products">Show All Products</button>
-
+            <button type="submit" class="show-products" name="showproducts">Show All Products</button>
             <h2>Добавить в корзину</h2>
             <label for="productId">ID товара:</label><br>
             <input type="text" name="idProduct" placeholder="id"><br>
