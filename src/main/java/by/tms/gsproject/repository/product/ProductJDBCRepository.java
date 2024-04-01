@@ -8,15 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ProductJDBCRepository implements ProductRepository {
-    private final String ADD_PRODUCT = "insert into gsproject.products (id, \"name\",type, price, quantity) " + "values (?,?,?,?,?)";
-    private final String MAX_ID = "select max(id) from gsproject.products";
+import static by.tms.gsproject.constants.SQLQueries.*;
 
+public class ProductJDBCRepository implements ProductRepository {
     @Override
     public void add(Product product) {
         try (Connection connection = JDBCConnection.getConnection()) {
-            String query = "SELECT id, quantity FROM gsproject.products WHERE \"name\" = ? AND type = ? AND price = ?";
-            try (PreparedStatement checkStatement = connection.prepareStatement(query)) {
+            try (PreparedStatement checkStatement = connection.prepareStatement(SELECT_PRODUCT_BY_NAME_AND_TYPE_AND_PRICE)) {
                 checkStatement.setString(1, product.getName());
                 checkStatement.setString(2, product.getType());
                 checkStatement.setDouble(3, product.getPrice());
@@ -36,8 +34,7 @@ public class ProductJDBCRepository implements ProductRepository {
     }
 
     private void updateQuantity(Connection connection, long id, int newQuantity) throws SQLException {
-        String updateQuery = "UPDATE gsproject.products SET quantity = ? WHERE id = ?";
-        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement updateStatement = connection.prepareStatement(UPDATE_QUANTITY)) {
             updateStatement.setInt(1, newQuantity);
             updateStatement.setLong(2, id);
             updateStatement.executeUpdate();
@@ -63,7 +60,7 @@ public class ProductJDBCRepository implements ProductRepository {
 
     @Override
     public void deleteById(long productId) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM gsproject.products WHERE id = ?")) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_BY_ID)) {
             preparedStatement.setLong(1, productId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -73,7 +70,7 @@ public class ProductJDBCRepository implements ProductRepository {
 
     @Override
     public Product findById(long productId) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products WHERE id = ?")) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PRODUCT_BY_ID)) {
             preparedStatement.setLong(1, productId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -95,7 +92,7 @@ public class ProductJDBCRepository implements ProductRepository {
     @Override
     public Collection<Product> allProducts() {
         Collection<Product> allProducts = new ArrayList<>();
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products ORDER BY id"); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PRODUCTS); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 long id = resultSet.getLong(1);
                 String name = resultSet.getString(2);
@@ -113,7 +110,7 @@ public class ProductJDBCRepository implements ProductRepository {
 
     @Override
     public Product findByName(String productName) {
-        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gsproject.products WHERE name = ?")) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PRODUCT_BY_NAME)) {
             preparedStatement.setString(1, productName);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -136,7 +133,7 @@ public class ProductJDBCRepository implements ProductRepository {
         List<Product> products = new ArrayList<>();
         JDBCConnection connection = new JDBCConnection();
         Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.products WHERE id = ANY(?)");
+        PreparedStatement preparedStatement = con.prepareStatement(SELECT_PRODUCTS_BY_IDS);
         Array array = con.createArrayOf("NUMERIC", ids.toArray());
         preparedStatement.setArray(1, array);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -151,11 +148,12 @@ public class ProductJDBCRepository implements ProductRepository {
         }
         return products;
     }
+
     @Override
     public long getProductQuantityById(Long productId) throws SQLException {
         JDBCConnection connection = new JDBCConnection();
         Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("SELECT quantity FROM gsproject.products WHERE id = ?");
+        PreparedStatement preparedStatement = con.prepareStatement(SELECT_PRODUCT_QUANTITY_BY_ID);
         preparedStatement.setLong(1, productId);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {

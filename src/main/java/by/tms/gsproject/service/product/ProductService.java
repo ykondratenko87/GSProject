@@ -79,6 +79,7 @@ public class ProductService implements ProductServiceInterface {
             throw new IllegalArgumentException("Товар с указанным ID не найден");
         }
     }
+
     public long getProductQuantityById(Long productId) throws SQLException {
         return productRepository.getProductQuantityById(productId);
     }

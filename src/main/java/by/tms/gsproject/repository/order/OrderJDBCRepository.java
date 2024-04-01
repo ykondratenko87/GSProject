@@ -8,65 +8,68 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static by.tms.gsproject.constants.SQLQueries.*;
+
 public class OrderJDBCRepository implements OrderRepository {
     JDBCConnection connection = new JDBCConnection();
 
     @Override
     public Order add(Long userId, long productPrice) throws SQLException {
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatementMaxId = con.prepareStatement("SELECT max(id) from gsproject.orders");
-        ResultSet resultSet = preparedStatementMaxId.executeQuery();
-        resultSet.next();
-        long maxId = resultSet.getLong(1);
-        maxId++;
-        PreparedStatement preparedStatement = con.prepareStatement(" insert into gsproject.orders(id, userId, cost, status)  " + "values (?,?,?,?)");
-        String status = "ORDERING";
-        preparedStatement.setLong(1, maxId);
-        preparedStatement.setLong(2, userId);
-        preparedStatement.setLong(3, productPrice);
-        preparedStatement.setString(4, status);
-        preparedStatement.executeUpdate();
-        return new Order(maxId, userId, productPrice, status);
+        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementMaxId = con.prepareStatement(SELECT_MAX_ID_QUERY); PreparedStatement preparedStatement = con.prepareStatement(INSERT_ORDER_QUERY)) {
+            try (ResultSet resultSet = preparedStatementMaxId.executeQuery()) {
+                resultSet.next();
+                long maxId = resultSet.getLong(1) + 1;
+                String status = "ORDERING";
+                preparedStatement.setLong(1, maxId);
+                preparedStatement.setLong(2, userId);
+                preparedStatement.setLong(3, productPrice);
+                preparedStatement.setString(4, status);
+                preparedStatement.executeUpdate();
+                return new Order(maxId, userId, productPrice, status);
+            }
+        }
     }
 
     @Override
     public Order getOrderByUserid(Long userId) throws SQLException {
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM gsproject.orders WHERE userid = ? AND status = 'ORDERING'");
-        preparedStatement.setLong(1, userId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        Order order = new Order();
-        while (resultSet.next()) {
-            Long id = resultSet.getLong("id");
-            Long userid = resultSet.getLong("userid");
-            Long productPrice = resultSet.getLong("cost");
-            String status = resultSet.getString("status");
-            order.setId(id);
-            order.setUserId(userid);
-            order.setProductPrice(productPrice);
-            order.setStatus(status);
+        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_ORDER_BY_USER_ID_QUERY)) {
+            preparedStatement.setLong(1, userId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Order order = new Order();
+                while (resultSet.next()) {
+                    Long id = resultSet.getLong("id");
+                    Long userid = resultSet.getLong("userid");
+                    Long productPrice = resultSet.getLong("cost");
+                    String status = resultSet.getString("status");
+                    order.setId(id);
+                    order.setUserId(userid);
+                    order.setProductPrice(productPrice);
+                    order.setStatus(status);
+                }
+                return order;
+            }
         }
-        return order;
     }
 
     public Long getCostByOrderId(Long orderId) throws SQLException {
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("SELECT cost FROM gsproject.orders WHERE id = ?");
-        preparedStatement.setLong(1, orderId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        Long orderCost = null;
-        if (resultSet.next()) {
-            orderCost = resultSet.getLong("cost");
+        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_COST_BY_ORDER_ID_QUERY)) {
+            preparedStatement.setLong(1, orderId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Long orderCost = null;
+                if (resultSet.next()) {
+                    orderCost = resultSet.getLong("cost");
+                }
+                return orderCost;
+            }
         }
-        return orderCost;
     }
 
     @Override
     public void updateOrderCost(Long orderId, Long newCost) throws SQLException {
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement("UPDATE gsproject.orders SET cost = ? WHERE id = ?");
-        preparedStatement.setLong(1, newCost);
-        preparedStatement.setLong(2, orderId);
-        preparedStatement.executeUpdate();
+        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(UPDATE_ORDER_COST_QUERY)) {
+            preparedStatement.setLong(1, newCost);
+            preparedStatement.setLong(2, orderId);
+            preparedStatement.executeUpdate();
+        }
     }
 }
