@@ -1,7 +1,7 @@
 package by.tms.gsproject.controller.basket;
 
 import by.tms.gsproject.entity.user.User;
-import by.tms.gsproject.service.order.OrderService;
+import by.tms.gsproject.service.basket.BasketService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,8 +16,8 @@ public class CleanBasketController {
         if (session != null) {
             User user = (User) session.getAttribute("authenticatedUser");
             if (user != null) {
-                OrderService orderService = new OrderService();
-                orderService.cleanBasket(user.getId());
+                BasketService basketService = new BasketService();
+                basketService.cleanBasket(user.getId());
                 session.getAttribute("orders");
                 req.getRequestDispatcher("/jsp/client/products.jsp").forward(req, resp);
             }

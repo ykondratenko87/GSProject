@@ -34,15 +34,6 @@ public class UserFileRepository implements UserRepository {
     }
 
     @Override
-    public User update(User user) {
-        Collection<User> allUsers = allUsers();
-        allUsers.removeIf(u -> Long.valueOf(u.getId()).equals(user.getId()));
-        allUsers.add(user);
-        saveUsers(allUsers);
-        return user;
-    }
-
-    @Override
     public Collection<User> allUsers() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             Collection<User> users = (Collection<User>) ois.readObject();
@@ -54,10 +45,7 @@ public class UserFileRepository implements UserRepository {
 
     @Override
     public User getUserById(Long userId) {
-        return allUsers().stream()
-                .filter(user -> user.getId() == userId)
-                .findFirst()
-                .orElse(null);
+        return allUsers().stream().filter(user -> user.getId() == userId).findFirst().orElse(null);
     }
 
     private long getLastId() {

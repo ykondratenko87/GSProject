@@ -16,7 +16,7 @@ import by.tms.gsproject.service.product.ProductService;
 import java.sql.SQLException;
 import java.util.List;
 
-public class OrderService {
+public class OrderService implements OrderServiceInterface {
     public OrderResponse addUserByOrder(Long userId, Long productPrice) throws SQLException {
         OrderRepository repository = new OrderJDBCRepository();
         OrderMapper orderMapper = new OrderMapper();
@@ -25,6 +25,14 @@ public class OrderService {
     }
 
     public BasketResponse addOrderByBasket(Long userId, Long productId, Long productPrice, Long count) throws SQLException {
+        ProductService productService = new ProductService();
+        long availableQuantity = productService.getProductQuantityById(productId);
+        if (availableQuantity <= 0) {
+            throw new IllegalArgumentException("Товар закончился");
+        } else if (count > availableQuantity) {
+            throw new IllegalArgumentException("Недостаточное количество товара в наличии");
+        }
+
         OrderRepository orderRepository = new OrderJDBCRepository();
         Order orderByUserId = orderRepository.getOrderByUserid(userId);
         if (orderByUserId.getId() == null || !orderByUserId.getStatus().equals("ORDERING")) {
@@ -67,22 +75,6 @@ public class OrderService {
         OrderResponse orderResponse = orderMapper.toResponse(orderByUserid);
         orderResponse.setProducts(productsByIds);
         return orderResponse;
-    }
-
-    public void cleanBasket(Long userId) throws SQLException {
-        OrderRepository orderJDBCRepository = new OrderJDBCRepository();
-        Order orderByUserid = orderJDBCRepository.getOrderByUserid(userId);
-        BasketRepository basketRepository = new BasketJDBCRepository();
-        Long getOrderId = orderByUserid.getId();
-        List<Basket> basketsByOrderId = basketRepository.getBasketsByOrderId(getOrderId);
-        List<Long> listProductId = basketsByOrderId.stream().map(basket -> basket.getProductId()).toList();
-        List<Long> listCount = basketsByOrderId.stream().map(Basket::getCount).toList();
-        basketRepository.cleanBasket(getOrderId, listProductId, listCount);
-    }
-
-    public void clean() {
-        BasketRepository basketRepository = new BasketJDBCRepository();
-        basketRepository.clean();
     }
 
     public Long getOrderCostById(Long orderId) throws SQLException {

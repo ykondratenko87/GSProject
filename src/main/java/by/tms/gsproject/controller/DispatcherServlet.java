@@ -66,17 +66,13 @@ public class DispatcherServlet extends HttpServlet {
             LogoutClientController logoutClientController = new LogoutClientController();
             logoutClientController.logoutClient(request, response);
         }
-        if ("/products".equals(path)) {
+        if ("/products".equals(path) && request.getParameter("showproducts") != null) {
             ShowProductsClientController showProductsClientController = new ShowProductsClientController();
             showProductsClientController.showAProducts(request, response);
         }
         if ("/products".equals(path) && request.getParameter("addProductByBasket") != null) {
             BasketController basketController = new BasketController();
-            try {
-                basketController.addOrderByBasket(request, response);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            basketController.addOrderByBasket(request, response);
         }
         if ("/basket".equals(path) && request.getParameter("basket") != null) {
             AllOrdersController allOrdersController = new AllOrdersController();

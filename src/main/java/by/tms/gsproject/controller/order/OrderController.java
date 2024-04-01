@@ -19,7 +19,7 @@ public class OrderController {
                 OrderService orderService = new OrderService();
                 orderService.makeOrder(user.getId());
                 req.getSession().setAttribute("orderStatus", "COMPLETED");
-                req.getRequestDispatcher("/jsp/client/basket.jsp").forward(req, resp);
+                req.getRequestDispatcher("/jsp/client/basketfinal.jsp").forward(req, resp);
             }
         }
     }

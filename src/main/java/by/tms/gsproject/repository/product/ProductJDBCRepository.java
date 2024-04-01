@@ -88,7 +88,7 @@ public class ProductJDBCRepository implements ProductRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to find product with ID: " + productId, e);
+            throw new IllegalArgumentException("Failed to find product with ID: " + productId, e);
         }
     }
 
@@ -150,5 +150,18 @@ public class ProductJDBCRepository implements ProductRepository {
             products.add(product);
         }
         return products;
+    }
+    @Override
+    public long getProductQuantityById(Long productId) throws SQLException {
+        JDBCConnection connection = new JDBCConnection();
+        Connection con = connection.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement("SELECT quantity FROM gsproject.products WHERE id = ?");
+        preparedStatement.setLong(1, productId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getLong("quantity");
+        } else {
+            throw new RuntimeException("Товар не найден");
+        }
     }
 }

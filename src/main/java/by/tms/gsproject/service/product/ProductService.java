@@ -76,7 +76,10 @@ public class ProductService implements ProductServiceInterface {
         if (product != null) {
             return product.getPrice();
         } else {
-            throw new RuntimeException("Товар с указанным ID не найден");
+            throw new IllegalArgumentException("Товар с указанным ID не найден");
         }
+    }
+    public long getProductQuantityById(Long productId) throws SQLException {
+        return productRepository.getProductQuantityById(productId);
     }
 }
