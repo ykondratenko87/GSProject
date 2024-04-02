@@ -71,4 +71,8 @@ public class UserFileRepository implements UserRepository {
         }
         return null;
     }
+
+    @Override
+    public void update(User user) {
+    }
 }

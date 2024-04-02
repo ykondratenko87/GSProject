@@ -96,6 +96,13 @@
             <button type="submit" class="create-account">Products</button>
         </div>
     </form>
+    <form>
+        <div class="container">
+            <button type="submit" name="account" formaction="http://localhost:8080/GSProject/account" formmethod="post">
+                Edit Account
+            </button>
+        </div>
+    </form>
     <form id="logout-form" method="post" action="http://localhost:8080/GSProject/client">
         <div>
             <button type="submit" class="create-account logout-button">Log out</button>

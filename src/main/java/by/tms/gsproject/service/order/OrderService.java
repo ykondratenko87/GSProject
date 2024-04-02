@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class OrderService implements OrderServiceInterface {
+    @Override
     public OrderResponse addUserByOrder(Long userId, Long productPrice) throws SQLException {
         OrderRepository repository = new OrderJDBCRepository();
         OrderMapper orderMapper = new OrderMapper();
@@ -24,6 +25,7 @@ public class OrderService implements OrderServiceInterface {
         return orderMapper.toResponse(order);
     }
 
+    @Override
     public BasketResponse addOrderByBasket(Long userId, Long productId, Long productPrice, Long count) throws SQLException {
         ProductService productService = new ProductService();
         long availableQuantity = productService.getProductQuantityById(productId);
@@ -51,11 +53,13 @@ public class OrderService implements OrderServiceInterface {
         return basketMapper.toResponse(basket);
     }
 
+    @Override
     public void makeOrder(Long userId) throws SQLException {
         BasketRepository repository = new BasketJDBCRepository();
         repository.makeOrder(userId);
     }
 
+    @Override
     public OrderResponse allOrders(Long userId) throws SQLException {
         OrderRepository orderJDBCRepository = new OrderJDBCRepository();
         Order orderByUserid = orderJDBCRepository.getOrderByUserid(userId);
@@ -80,6 +84,7 @@ public class OrderService implements OrderServiceInterface {
         return orderResponse;
     }
 
+    @Override
     public Long getOrderCostById(Long orderId) throws SQLException {
         OrderRepository repository = new OrderJDBCRepository();
         return repository.getCostByOrderId(orderId);

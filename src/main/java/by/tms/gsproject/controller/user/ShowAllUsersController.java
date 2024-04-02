@@ -20,6 +20,5 @@ public class ShowAllUsersController {
         Collection<User> users = userService.allUsers();
         request.setAttribute("users", users);
         request.getRequestDispatcher("/jsp/admin/editusers.jsp").forward(request, response);
-
     }
 }

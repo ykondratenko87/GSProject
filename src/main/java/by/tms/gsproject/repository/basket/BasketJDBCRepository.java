@@ -10,11 +10,9 @@ import java.util.List;
 import static by.tms.gsproject.constants.SQLQueries.*;
 
 public class BasketJDBCRepository implements BasketRepository {
-    JDBCConnection connection = new JDBCConnection();
-
     @Override
     public Basket add(Long orderId, Long productId, Long count) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementMax = con.prepareStatement(SELECT_MAX_BASKET_ID); ResultSet resultSet = preparedStatementMax.executeQuery(); PreparedStatement preparedStatement = con.prepareStatement(INSERT_INTO_BASKETS); PreparedStatement quantity = con.prepareStatement(SELECT_PRODUCT_QUANTITY)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatementMax = con.prepareStatement(SELECT_MAX_BASKET_ID); ResultSet resultSet = preparedStatementMax.executeQuery(); PreparedStatement preparedStatement = con.prepareStatement(INSERT_INTO_BASKETS); PreparedStatement quantity = con.prepareStatement(SELECT_PRODUCT_QUANTITY)) {
             resultSet.next();
             long maxId = resultSet.getLong(1);
             preparedStatement.setLong(1, ++maxId);
@@ -41,7 +39,7 @@ public class BasketJDBCRepository implements BasketRepository {
 
     @Override
     public void makeOrder(Long userId) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement updateOrderStatusStatement = con.prepareStatement(UPDATE_ORDER_STATUS); PreparedStatement selectProductsAndQuantitiesStatement = con.prepareStatement(SELECT_PRODUCTS_AND_QUANTITIES); PreparedStatement updateProductQuantitiesStatement = con.prepareStatement(UPDATE_PRODUCT_QUANTITIES)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement updateOrderStatusStatement = con.prepareStatement(UPDATE_ORDER_STATUS); PreparedStatement selectProductsAndQuantitiesStatement = con.prepareStatement(SELECT_PRODUCTS_AND_QUANTITIES); PreparedStatement updateProductQuantitiesStatement = con.prepareStatement(UPDATE_PRODUCT_QUANTITIES)) {
             updateOrderStatusStatement.setString(1, "COMPLETED");
             updateOrderStatusStatement.setLong(2, userId);
             updateOrderStatusStatement.executeUpdate();
@@ -60,7 +58,7 @@ public class BasketJDBCRepository implements BasketRepository {
 
     @Override
     public List<Basket> getBasketsByOrderId(Long orderId) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementMaxId = con.prepareStatement(SELECT_BASKETS_BY_ORDER_ID)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatementMaxId = con.prepareStatement(SELECT_BASKETS_BY_ORDER_ID)) {
             preparedStatementMaxId.setLong(1, orderId);
             try (ResultSet resultSet = preparedStatementMaxId.executeQuery()) {
                 List<Basket> baskets = new ArrayList<>();
@@ -83,7 +81,7 @@ public class BasketJDBCRepository implements BasketRepository {
 
     @Override
     public void cleanBasket(Long orderId, List<Long> productId, List<Long> count) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementStatus = con.prepareStatement(SELECT_ORDER_STATUS); PreparedStatement preparedStatementQuantity = con.prepareStatement(SELECT_PRODUCT_QUANTITIES); PreparedStatement preparedStatementBasket = con.prepareStatement(DELETE_FROM_BASKETS); PreparedStatement preparedStatementOrders = con.prepareStatement(DELETE_FROM_ORDERS)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatementStatus = con.prepareStatement(SELECT_ORDER_STATUS); PreparedStatement preparedStatementQuantity = con.prepareStatement(SELECT_PRODUCT_QUANTITIES); PreparedStatement preparedStatementBasket = con.prepareStatement(DELETE_FROM_BASKETS); PreparedStatement preparedStatementOrders = con.prepareStatement(DELETE_FROM_ORDERS)) {
             preparedStatementStatus.setLong(1, orderId);
             try (ResultSet status = preparedStatementStatus.executeQuery()) {
                 status.next();
@@ -111,7 +109,7 @@ public class BasketJDBCRepository implements BasketRepository {
 
     @Override
     public void clean() {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementBasket = con.prepareStatement(DELETE_ALL_FROM_BASKETS); PreparedStatement preparedStatementOrders = con.prepareStatement(DELETE_ALL_FROM_ORDERS)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatementBasket = con.prepareStatement(DELETE_ALL_FROM_BASKETS); PreparedStatement preparedStatementOrders = con.prepareStatement(DELETE_ALL_FROM_ORDERS)) {
             preparedStatementBasket.executeUpdate();
             preparedStatementOrders.executeUpdate();
         } catch (SQLException e) {

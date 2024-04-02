@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class BasketService implements BasketServiceInterface {
+    @Override
     public void cleanBasket(Long userId) throws SQLException {
         OrderRepository orderJDBCRepository = new OrderJDBCRepository();
         Order orderByUserid = orderJDBCRepository.getOrderByUserid(userId);
@@ -22,6 +23,7 @@ public class BasketService implements BasketServiceInterface {
         basketRepository.cleanBasket(getOrderId, listProductId, listCount);
     }
 
+    @Override
     public void clean() {
         BasketRepository basketRepository = new BasketJDBCRepository();
         basketRepository.clean();

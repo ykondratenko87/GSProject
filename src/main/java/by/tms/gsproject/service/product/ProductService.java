@@ -59,6 +59,7 @@ public class ProductService implements ProductServiceInterface {
         }
     }
 
+    @Override
     public List<ProductResponse> getProductsByIds(List<Long> ids) throws SQLException {
         ProductRepository repository = new ProductJDBCRepository();
         List<Product> products = repository.getProductsByIds(ids);
@@ -70,6 +71,7 @@ public class ProductService implements ProductServiceInterface {
         return productResponses;
     }
 
+    @Override
     public double getProductPriceById(long productId) {
         ProductRepository repository = new ProductJDBCRepository();
         Product product = repository.findById(productId);
@@ -80,6 +82,7 @@ public class ProductService implements ProductServiceInterface {
         }
     }
 
+    @Override
     public long getProductQuantityById(Long productId) throws SQLException {
         return productRepository.getProductQuantityById(productId);
     }
