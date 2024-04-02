@@ -18,4 +18,6 @@ public interface UserServiceInterface {
     UserResponse getUserById(long userId);
 
     Collection<User> allUsers();
+
+    void updateUserDates(UserRequest userRequest);
 }

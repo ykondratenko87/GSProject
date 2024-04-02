@@ -24,7 +24,7 @@ public class SearchUserController {
                 if (userResponse != null) {
                     request.setAttribute("user", userResponse);
                 } else {
-                    request.setAttribute("searchResult", "Продукт с указанным именем не найден");
+                    request.setAttribute("searchResult", "Пользователь с указанным именем не найден");
                 }
             } else if (userIdStr != null && !userIdStr.isEmpty()) {
                 long useId = Long.parseLong(userIdStr);

@@ -73,4 +73,15 @@ public class UserService implements UserServiceInterface {
     public Collection<User> allUsers() {
         return userRepository.allUsers();
     }
+
+    @Override
+    public void updateUserDates(UserRequest userRequest) {
+        User user = new User();
+        user.setId(userRequest.getId());
+        user.setName(userRequest.getName());
+        user.setSurname(userRequest.getSurname());
+        user.setLogin(userRequest.getLogin());
+        user.setPassword(userRequest.getPassword());
+        userRepository.update(user);
+    }
 }

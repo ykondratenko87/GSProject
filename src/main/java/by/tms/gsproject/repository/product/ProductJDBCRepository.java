@@ -129,37 +129,38 @@ public class ProductJDBCRepository implements ProductRepository {
         }
     }
 
+    @Override
     public List<Product> getProductsByIds(List<Long> ids) throws SQLException {
         List<Product> products = new ArrayList<>();
-        JDBCConnection connection = new JDBCConnection();
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement(SELECT_PRODUCTS_BY_IDS);
-        Array array = con.createArrayOf("NUMERIC", ids.toArray());
-        preparedStatement.setArray(1, array);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            long id = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            String type = resultSet.getString("type");
-            double price = resultSet.getInt("price");
-            int quantity = resultSet.getInt("quantity");
-            Product product = new Product(Long.valueOf(id), type, name, price, quantity);
-            products.add(product);
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_PRODUCTS_BY_IDS)) {
+            Array array = con.createArrayOf("NUMERIC", ids.toArray());
+            preparedStatement.setArray(1, array);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    long id = resultSet.getLong("id");
+                    String name = resultSet.getString("name");
+                    String type = resultSet.getString("type");
+                    double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
+                    Product product = new Product(id, name, type, price, quantity);
+                    products.add(product);
+                }
+            }
         }
         return products;
     }
 
     @Override
     public long getProductQuantityById(Long productId) throws SQLException {
-        JDBCConnection connection = new JDBCConnection();
-        Connection con = connection.getConnection();
-        PreparedStatement preparedStatement = con.prepareStatement(SELECT_PRODUCT_QUANTITY_BY_ID);
-        preparedStatement.setLong(1, productId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getLong("quantity");
-        } else {
-            throw new RuntimeException("Товар не найден");
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_PRODUCT_QUANTITY_BY_ID)) {
+            preparedStatement.setLong(1, productId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getLong("quantity");
+                } else {
+                    throw new RuntimeException("Товар не найден");
+                }
+            }
         }
     }
 }

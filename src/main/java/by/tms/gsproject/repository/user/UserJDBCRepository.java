@@ -118,4 +118,19 @@ public class UserJDBCRepository implements UserRepository {
             throw new RuntimeException("Failed to find user with login: " + userLogin, e);
         }
     }
+
+    @Override
+    public void update(User user) {
+        try (Connection connection = JDBCConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getLogin());
+            preparedStatement.setLong(5, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update user with ID: " + user.getId(), e);
+        }
+    }
 }

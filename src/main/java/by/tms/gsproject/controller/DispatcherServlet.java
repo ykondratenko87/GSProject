@@ -1,9 +1,7 @@
 package by.tms.gsproject.controller;
 
-import by.tms.gsproject.controller.basket.BasketController;
-import by.tms.gsproject.controller.basket.CleanBasketController;
-import by.tms.gsproject.controller.order.AllOrdersController;
-import by.tms.gsproject.controller.order.OrderController;
+import by.tms.gsproject.controller.basket.*;
+import by.tms.gsproject.controller.order.*;
 import by.tms.gsproject.controller.product.*;
 import by.tms.gsproject.controller.user.*;
 import jakarta.servlet.ServletException;
@@ -94,6 +92,22 @@ public class DispatcherServlet extends HttpServlet {
             CleanBasketController cleanBasketController = new CleanBasketController();
             try {
                 cleanBasketController.cleanBasket(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if ("/account".equals(path) && request.getParameter("account") != null) {
+            EditAccountController editAccountController = new EditAccountController();
+            try {
+                editAccountController.showDates(request, response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if ("/account".equals(path) && request.getParameter("updatedates") != null) {
+            EditAccountController editAccountController = new EditAccountController();
+            try {
+                editAccountController.updateDates(request, response);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

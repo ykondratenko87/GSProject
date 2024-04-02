@@ -11,11 +11,10 @@ import java.sql.SQLException;
 import static by.tms.gsproject.constants.SQLQueries.*;
 
 public class OrderJDBCRepository implements OrderRepository {
-    JDBCConnection connection = new JDBCConnection();
 
     @Override
     public Order add(Long userId, long productPrice) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatementMaxId = con.prepareStatement(SELECT_MAX_ID_QUERY); PreparedStatement preparedStatement = con.prepareStatement(INSERT_ORDER_QUERY)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatementMaxId = con.prepareStatement(SELECT_MAX_ID_QUERY); PreparedStatement preparedStatement = con.prepareStatement(INSERT_ORDER_QUERY)) {
             try (ResultSet resultSet = preparedStatementMaxId.executeQuery()) {
                 resultSet.next();
                 long maxId = resultSet.getLong(1) + 1;
@@ -32,7 +31,7 @@ public class OrderJDBCRepository implements OrderRepository {
 
     @Override
     public Order getOrderByUserid(Long userId) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_ORDER_BY_USER_ID_QUERY)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_ORDER_BY_USER_ID_QUERY)) {
             preparedStatement.setLong(1, userId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 Order order = new Order();
@@ -52,7 +51,7 @@ public class OrderJDBCRepository implements OrderRepository {
     }
 
     public Long getCostByOrderId(Long orderId) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_COST_BY_ORDER_ID_QUERY)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(SELECT_COST_BY_ORDER_ID_QUERY)) {
             preparedStatement.setLong(1, orderId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 Long orderCost = null;
@@ -66,7 +65,7 @@ public class OrderJDBCRepository implements OrderRepository {
 
     @Override
     public void updateOrderCost(Long orderId, Long newCost) throws SQLException {
-        try (Connection con = connection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(UPDATE_ORDER_COST_QUERY)) {
+        try (Connection con = JDBCConnection.getConnection(); PreparedStatement preparedStatement = con.prepareStatement(UPDATE_ORDER_COST_QUERY)) {
             preparedStatement.setLong(1, newCost);
             preparedStatement.setLong(2, orderId);
             preparedStatement.executeUpdate();

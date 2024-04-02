@@ -35,4 +35,5 @@ public class SQLQueries {
     public static final String SELECT_ORDER_BY_USER_ID_QUERY = "SELECT * FROM gsproject.orders WHERE userid = ? AND status = 'ORDERING'";
     public static final String SELECT_COST_BY_ORDER_ID_QUERY = "SELECT cost FROM gsproject.orders WHERE id = ?";
     public static final String UPDATE_ORDER_COST_QUERY = "UPDATE gsproject.orders SET cost = ? WHERE id = ?";
+    public static final String UPDATE_USER = "UPDATE gsproject.users SET name = ?, surname = ?, password = ?, login = ? WHERE id = ?";
 }
