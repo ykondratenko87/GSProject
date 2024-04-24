@@ -7,6 +7,7 @@ import by.tms.gsproject.entity.user.UserRole;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Base64;
 
 import static by.tms.gsproject.constants.SQLQueries.*;
 
@@ -33,7 +34,8 @@ public class UserJDBCRepository implements UserRepository {
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getSurname());
             preparedStatement.setString(4, user.getLogin());
-            preparedStatement.setString(5, user.getPassword());
+            String encodedPassword = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
+            preparedStatement.setString(5, encodedPassword);
             preparedStatement.setString(6, String.valueOf(user.getRole()));
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -61,10 +63,11 @@ public class UserJDBCRepository implements UserRepository {
                 String name = resultSet.getString(2);
                 String surname = resultSet.getString(3);
                 String login = resultSet.getString(4);
-                String password = resultSet.getString(5);
+                String encodedPassword = resultSet.getString(5);
                 String roleString = resultSet.getString(6);
                 UserRole.Role role = UserRole.Role.valueOf(roleString);
-                User user = new User(id, name, surname, login, password, role);
+                String decodedPassword = new String(Base64.getDecoder().decode(encodedPassword));
+                User user = new User(id, name, surname, login, decodedPassword, role);
                 allUsers.add(user);
             }
         } catch (SQLException e) {
@@ -83,10 +86,11 @@ public class UserJDBCRepository implements UserRepository {
                     String name = resultSet.getString(2);
                     String surname = resultSet.getString(3);
                     String login = resultSet.getString(4);
-                    String password = resultSet.getString(5);
+                    String encodedPassword = resultSet.getString(5);
                     String roleString = resultSet.getString(6);
                     UserRole.Role role = UserRole.Role.valueOf(roleString);
-                    return new User(id, name, surname, login, password, role);
+                    String decodedPassword = new String(Base64.getDecoder().decode(encodedPassword));
+                    return new User(id, name, surname, login, decodedPassword, role);
                 } else {
                     return null;
                 }
@@ -106,10 +110,11 @@ public class UserJDBCRepository implements UserRepository {
                     String name = resultSet.getString(2);
                     String surname = resultSet.getString(3);
                     String login = resultSet.getString(4);
-                    String password = resultSet.getString(5);
+                    String encodedPassword = resultSet.getString(5);
                     String roleString = resultSet.getString(6);
                     UserRole.Role role = UserRole.Role.valueOf(roleString);
-                    return new User(id, name, surname, login, password, role);
+                    String decodedPassword = new String(Base64.getDecoder().decode(encodedPassword));
+                    return new User(id, name, surname, login, decodedPassword, role);
                 } else {
                     return null;
                 }
@@ -121,11 +126,11 @@ public class UserJDBCRepository implements UserRepository {
 
     @Override
     public void update(User user) {
-        try (Connection connection = JDBCConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER)) {
+        try (Connection connection = JDBCConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setString(3, user.getPassword());
+            String encodedPassword = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
+            preparedStatement.setString(3, encodedPassword);
             preparedStatement.setString(4, user.getLogin());
             preparedStatement.setLong(5, user.getId());
             preparedStatement.executeUpdate();
