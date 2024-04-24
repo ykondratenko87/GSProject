@@ -20,6 +20,7 @@ public class UserMapper {
         userResponse.setName(user.getName());
         userResponse.setSurname(user.getSurname());
         userResponse.setLogin(user.getLogin());
+//        userResponse.setPassword(user.getPassword()); //для вывода пароля на экран
         userResponse.setRole(user.getRole());
         return userResponse;
     }
