@@ -107,7 +107,7 @@
         <div class="form-group">
             <button class="btn btn-primary btn-block create-account" type="Submit">Log in</button>
         </div>
-        <p>Don't have an account? <a href="registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
+        <p>Don't have an account? <a href="jsp/auth/registration.jsp" class="text-white-50 fw-bold">Sign Up</a>.</p>
     </form>
 </div>
 </body>
